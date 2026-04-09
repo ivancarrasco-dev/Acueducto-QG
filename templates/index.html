@@ -5,33 +5,42 @@
     <div class="md:col-span-2 space-y-6">
         <div class="bg-white p-8 rounded-lg shadow-sm border-t-4 border-blue-600">
             <h1 class="text-3xl font-bold text-gray-800 mb-4">Bienvenidos a nuestra Asociación</h1>
-            <p class="text-gray-600 leading-relaxed">Trabajamos para llevar agua potable de calidad a cada hogar de nuestra vereda, gestionando el recurso de manera responsable y transparente.</p>
+            <p class="text-gray-600">Gestionando el agua de nuestra vereda con responsabilidad.</p>
         </div>
-
-        <h2 class="text-2xl font-bold text-blue-900">Noticias y Avisos</h2>
-        {% if noticias %}
-            {% for n in noticias %}
-            <div class="bg-white p-4 rounded shadow border-l-4 border-blue-400">
-                <h3 class="font-bold text-lg">{{ n.titulo }}</h3>
-                <p class="text-gray-600">{{ n.contenido }}</p>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p class="italic text-gray-500">No hay avisos recientes en este momento.</p>
-        {% endif %}
     </div>
 
-    <div id="contacto" class="bg-blue-50 p-6 rounded-lg shadow-inner">
-        <h3 class="text-xl font-bold mb-4">Información de Contacto</h3>
-        <ul class="space-y-4 text-gray-700">
-            <li><strong>📍 Dirección:</strong> Oficina Principal Vereda Central</li>
-            <li><strong>📞 Teléfono:</strong> +57 300 123 4567</li>
-            <li><strong>📧 Email:</strong> contacto@acueductorural.org</li>
-        </ul>
-        <div class="mt-6 pt-6 border-t border-blue-200">
-            <p class="text-sm font-bold text-blue-800 uppercase">Horarios de atención:</p>
-            <p class="text-sm">Lunes a Viernes: 8:00 AM - 4:00 PM</p>
-        </div>
+    <div id="contacto" class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+        <h3 class="text-xl font-bold mb-4 text-blue-900 border-b pb-2">Contáctenos</h3>
+        
+        <form action="/enviar_contacto" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Nombre Completo</label>
+                <input type="text" name="nombre" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Correo Electrónico</label>
+                <input type="email" name="correo" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Asunto</label>
+                <select name="asunto" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                    <option>Reportar Daño</option>
+                    <option>Petición/Queja</option>
+                    <option>Información General</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Mensaje</label>
+                <textarea name="mensaje" rows="4" class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 outline-none" required></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded hover:bg-blue-800 transition">
+                Enviar Reporte
+            </button>
+        </form>
     </div>
 
 </div>
