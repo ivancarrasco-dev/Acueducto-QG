@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Transparencia y Documentos</h1>
+    
+    <div class="bg-gray-200 p-6 rounded-lg mb-8">
+        <h2 class="font-bold mb-3 uppercase text-sm tracking-widest text-gray-600">Subir nuevo documento (Solo Admin)</h2>
+        <form action="/transparencia" method="POST" enctype="multipart/form-data" class="flex flex-col md:flex-row gap-4">
+            <input type="text" name="nombre" placeholder="Nombre del documento (ej. Acta 01)" class="p-2 rounded border flex-grow" required>
+            <input type="file" name="archivo" class="bg-white p-1 rounded border" required>
+            <button type="submit" class="bg-blue-700 text-white px-6 py-2 rounded font-bold hover:bg-blue-800">Subir</button>
+        </form>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="w-full text-left">
+            <thead class="bg-blue-900 text-white">
+                <tr>
+                    <th class="p-4">Nombre del Documento</th>
+                    <th class="p-4 text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in documentos %}
+                <tr class="border-b hover:bg-gray-50 transition">
+                    <td class="p-4 font-medium">{{ doc.nombre }}</td>
+                    <td class="p-4 text-center">
+                        <a href="/uploads/{{ doc.ruta }}" target="_blank" class="text-blue-600 font-bold hover:underline">Ver / Descargar PDF</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
