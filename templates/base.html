@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acueducto Rural - Asociación</title>
+    <title>Acueducto Rural - Gestión Comunitaria</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<body class="bg-slate-50 flex flex-col min-h-screen text-slate-800">
 
-    <nav class="bg-blue-800 text-white shadow-md p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold uppercase tracking-wider">Acueducto</a>
-            <div class="space-x-6 font-medium">
-                <a href="/" class="hover:text-blue-300">Inicio</a>
-                <a href="/transparencia" class="hover:text-blue-300">Transparencia</a>
-                <a href="#contacto" class="border-2 border-white px-4 py-1 rounded-full hover:bg-white hover:text-blue-800 transition">Contacto</a>
-            </div>
+    <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center p-4">
+            <a href="/" class="text-xl font-bold flex items-center gap-2">
+                <i class="fas fa-faucet-drip"></i> ACUEDUCTO QUEBRADA GRANDE
+            </a>
+            <div class="space-x-6 flex items-center">
+    <a href="/" class="hover:text-blue-200 transition font-medium">Inicio</a>
+    
+    {% if session.get('admin') %}
+        <a href="/admin" class="hover:text-blue-200 transition font-medium text-sm">Panel</a>
+        <a href="/logout" class="bg-rose-600 px-4 py-2 rounded-lg hover:bg-rose-700 transition text-sm font-bold shadow">Cerrar Sesión</a>
+    {% else %}
+        <a href="/login" class="bg-blue-800 px-4 py-2 rounded-lg hover:bg-blue-900 transition text-sm font-bold shadow">Acceso Junta</a>
+    {% endif %}
+</div>
         </div>
     </nav>
 
@@ -23,7 +31,9 @@
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
-              <div class="bg-green-200 text-green-800 p-3 rounded mb-4">{{ message }}</div>
+              <div class="bg-emerald-100 border-l-4 border-emerald-500 text-emerald-700 p-4 mb-6 rounded shadow-sm">
+                  {{ message }}
+              </div>
             {% endfor %}
           {% endif %}
         {% endwith %}
@@ -31,10 +41,13 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 p-8">
+    <footer class="bg-slate-900 text-slate-400 p-10 mt-10">
         <div class="container mx-auto text-center">
-            <p class="mb-2">Asociación de Acueducto Rural - Bogotá / Veredas</p>
-            <p class="text-sm">&copy; 2026 Sistema desarrollado para la comunidad.</p>
+            <p class="font-bold text-white mb-2">Asociación de Acueducto Rural</p>
+            <p>Servicio esencial para nuestra comunidad.</p>
+            <div class="mt-4 text-xs"> 
+                Desarrollado por Iván Carrasco - Tecnólogo SENA
+            </div>
         </div>
     </footer>
 

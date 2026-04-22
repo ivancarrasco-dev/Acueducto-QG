@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-10">
+    <div class="flex justify-between items-end border-b pb-4">
+        <h1 class="text-3xl font-black text-slate-900">Panel de Administración</h1>
+        <p class="text-slate-500 font-medium italic">Acceso exclusivo para la junta</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-emerald-500">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-emerald-700">
+            <i class="fas fa-plus-circle"></i> Publicar Nueva Noticia o Aviso
+        </h2>
+        <form action="/admin/noticia/nueva" method="POST" class="space-y-4">
+            <input type="text" name="titulo" placeholder="Título impactante (Ej: Mañana Corte de Agua)" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" required>
+            <textarea name="contenido" rows="4" placeholder="Escriba aquí los detalles..." class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" required></textarea>
+            <button type="submit" class="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 shadow-md transition">
+                Publicar Ahora
+            </button>
+        </form>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div class="bg-slate-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Noticias Publicadas</div>
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-slate-100 text-slate-600 text-sm uppercase">
+                    <th class="p-4">Fecha</th>
+                    <th class="p-4">Título</th>
+                    <th class="p-4 text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {% for n in noticias %}
+                <tr class="hover:bg-slate-50">
+                    <td class="p-4 text-slate-500 text-sm">{{ n.fecha.strftime('%d/%m/%Y') }}</td>
+                    <td class="p-4 font-bold text-slate-800">{{ n.titulo }}</td>
+                    <td class="p-4 text-center">
+                        <a href="/admin/noticia/borrar/{{ n.id }}" class="bg-rose-100 text-rose-600 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-rose-600 hover:text-white transition">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div class="bg-blue-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Mensajes de la Comunidad</div>
+        <div class="divide-y">
+            {% for m in mensajes %}
+            <div class="p-6 hover:bg-slate-50 transition">
+                <div class="flex justify-between mb-2">
+                    <span class="font-bold text-blue-700">{{ m.nombre }}</span>
+                    <span class="text-xs text-slate-400">{{ m.fecha.strftime('%d/%m/%Y %H:%M') }}</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-2"><strong>Correo:</strong> {{ m.correo }} | <strong>Asunto:</strong> {{ m.asunto }}</p>
+                <p class="text-slate-700">{{ m.mensaje }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
