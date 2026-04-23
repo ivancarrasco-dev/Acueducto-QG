@@ -59,6 +59,14 @@ def index():
     noticias = Noticia.query.order_by(Noticia.id.desc()).all()
     return render_template('index.html', noticias=noticias)
 
+@app.route('/nosotros')
+def nosotros():
+    return render_template('nosotros.html')
+
+@app.route('/contacto')
+def contacto():
+    return render_template('contacto.html')
+
 @app.route('/enviar_contacto', methods=['POST'])
 def enviar_contacto():
     nombre = request.form['nombre']

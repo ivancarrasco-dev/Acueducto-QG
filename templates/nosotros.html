@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-10">
+
+    <!-- Encabezado -->
+    <div class="bg-white p-10 rounded-2xl shadow-sm border-b-8 border-blue-600">
+        <h1 class="text-4xl font-black text-slate-900 mb-3 tracking-tight">Quiénes Somos</h1>
+        <p class="text-lg text-slate-600 leading-relaxed">
+            Somos una asociación comunitaria comprometida con garantizar el acceso al agua potable de manera justa, sostenible y transparente para todos los suscriptores de nuestra vereda.
+        </p>
+    </div>
+
+    <!-- Misión y Visión -->
+    <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Misión -->
+        <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-emerald-500">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-600 p-3 rounded-xl">
+                    <i class="fas fa-bullseye text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-slate-800">Misión</h2>
+            </div>
+            <p class="text-slate-600 leading-relaxed">
+                Prestar el servicio de acueducto rural con eficiencia, equidad y responsabilidad ambiental, asegurando el suministro continuo de agua de calidad para todos los habitantes de la comunidad, mediante una gestión participativa, transparente y comprometida con el bienestar colectivo.
+            </p>
+        </div>
+
+        <!-- Visión -->
+        <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-blue-500">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-blue-100 text-blue-600 p-3 rounded-xl">
+                    <i class="fas fa-eye text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-slate-800">Visión</h2>
+            </div>
+            <p class="text-slate-600 leading-relaxed">
+                Para el año 2030, ser reconocidos como un modelo de asociación rural en la región, con una infraestructura moderna, tarifas justas, y una comunidad activamente involucrada en la protección de las fuentes hídricas, garantizando el agua como derecho fundamental para las generaciones presentes y futuras.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Valores -->
+    <div class="bg-white p-8 rounded-2xl shadow-md">
+        <h2 class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-2">
+            <i class="fas fa-star text-yellow-500"></i> Nuestros Valores
+        </h2>
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+                <i class="fas fa-handshake text-blue-500 text-2xl mb-2"></i>
+                <p class="font-bold text-slate-800">Solidaridad</p>
+                <p class="text-sm text-slate-500 mt-1">Trabajamos juntos por el bien común de la comunidad.</p>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+                <i class="fas fa-search text-emerald-500 text-2xl mb-2"></i>
+                <p class="font-bold text-slate-800">Transparencia</p>
+                <p class="text-sm text-slate-500 mt-1">Rendimos cuentas claras a todos los suscriptores.</p>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+                <i class="fas fa-leaf text-green-500 text-2xl mb-2"></i>
+                <p class="font-bold text-slate-800">Sostenibilidad</p>
+                <p class="text-sm text-slate-500 mt-1">Protegemos las fuentes de agua para el futuro.</p>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+                <i class="fas fa-balance-scale text-purple-500 text-2xl mb-2"></i>
+                <p class="font-bold text-slate-800">Equidad</p>
+                <p class="text-sm text-slate-500 mt-1">Acceso justo al agua para todos sin excepción.</p>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+                <i class="fas fa-users text-orange-500 text-2xl mb-2"></i>
+                <p class="font-bold text-slate-800">Participación</p>
+                <p class="text-sm text-slate-500 mt-1">La comunidad toma parte activa en las decisiones.</p>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+                <i class="fas fa-shield-alt text-red-500 text-2xl mb-2"></i>
+                <p class="font-bold text-slate-800">Responsabilidad</p>
+                <p class="text-sm text-slate-500 mt-1">Cumplimos nuestros compromisos con seriedad.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
