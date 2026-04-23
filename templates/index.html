@@ -14,10 +14,15 @@
     {% if noticias %}
         <div class="grid gap-6">
         {% for n in noticias %}
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
-                <span class="text-xs font-bold text-blue-600 uppercase tracking-widest">{{ n.fecha.strftime('%d %b, %Y') }}</span>
-                <h3 class="text-xl font-bold mt-1 text-slate-900">{{ n.titulo }}</h3>
-                <p class="mt-3 text-slate-600 leading-relaxed">{{ n.contenido }}</p>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition overflow-hidden">
+                {% if n.imagen %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ n.imagen) }}" alt="{{ n.titulo }}" class="w-full h-56 object-cover">
+                {% endif %}
+                <div class="p-6">
+                    <span class="text-xs font-bold text-blue-600 uppercase tracking-widest">{{ n.fecha.strftime('%d %b, %Y') }}</span>
+                    <h3 class="text-xl font-bold mt-1 text-slate-900">{{ n.titulo }}</h3>
+                    <p class="mt-3 text-slate-600 leading-relaxed">{{ n.contenido }}</p>
+                </div>
             </div>
         {% endfor %}
         </div>

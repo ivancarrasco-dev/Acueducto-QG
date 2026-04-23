@@ -2,21 +2,31 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-# Clave secreta genérica e independiente
 app.secret_key = "acueducto_vereda_2026_seguro"
 
 # Configuración de Base de Datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///acueducto.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Configuración de subida de imágenes
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 db = SQLAlchemy(app)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # --- MODELOS DE BASE DE DATOS ---
 class Noticia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(100), nullable=False)
     contenido = db.Column(db.Text, nullable=False)
+    imagen = db.Column(db.String(200), nullable=True)
     fecha = db.Column(db.DateTime, default=datetime.now)
 
 class Mensaje(db.Model):
@@ -37,7 +47,6 @@ def login():
         usuario = request.form['usuario']
         password = request.form['password']
         
-        # Credenciales de administrador
         if usuario == 'admin' and password == 'Acueducto2026':
             session['admin'] = True
             flash("Inicio de sesión exitoso. Bienvenido al panel.")
@@ -99,7 +108,15 @@ def crear_noticia():
         
     titulo = request.form['titulo']
     contenido = request.form['contenido']
-    nueva_n = Noticia(titulo=titulo, contenido=contenido)
+    imagen_filename = None
+
+    archivo = request.files.get('imagen')
+    if archivo and allowed_file(archivo.filename):
+        filename = secure_filename(archivo.filename)
+        archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        imagen_filename = filename
+
+    nueva_n = Noticia(titulo=titulo, contenido=contenido, imagen=imagen_filename)
     db.session.add(nueva_n)
     db.session.commit()
     
