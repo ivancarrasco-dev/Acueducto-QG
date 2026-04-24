@@ -10,26 +10,68 @@
 <body class="bg-slate-50 flex flex-col min-h-screen text-slate-800">
 
     <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center p-4">
-            <a href="/" class="text-xl font-bold flex items-center gap-2">
-                <i class="fas fa-faucet-drip"></i> ACUEDUCTO QUEBRADA GRANDE
-            </a>
-            <div class="space-x-6 flex items-center">
-                <a href="/" class="hover:text-blue-200 transition font-medium">Inicio</a>
-                <a href="/nosotros" class="hover:text-blue-200 transition font-medium">Quiénes Somos</a>
-                <a href="/contacto" class="hover:text-blue-200 transition font-medium">Contacto</a>
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="/" class="text-lg font-bold flex items-center gap-2 shrink-0">
+                    <i class="fas fa-faucet-drip"></i>
+                    <span class="hidden sm:inline">ACUEDUCTO QUEBRADA GRANDE</span>
+                    <span class="sm:hidden">ACUEDUCTO</span>
+                </a>
 
-                {% if session.get('admin') %}
-                    <a href="/admin" class="hover:text-blue-200 transition font-medium text-sm">Panel</a>
-                    <a href="/logout" class="bg-rose-600 px-4 py-2 rounded-lg hover:bg-rose-700 transition text-sm font-bold shadow">Cerrar Sesión</a>
-                {% else %}
-                    <a href="/login" class="bg-blue-800 px-4 py-2 rounded-lg hover:bg-blue-900 transition text-sm font-bold shadow">Acceso Junta</a>
-                {% endif %}
+                <!-- Menú desktop -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="/" class="hover:text-blue-200 transition font-medium">Inicio</a>
+                    <a href="/nosotros" class="hover:text-blue-200 transition font-medium">Quiénes Somos</a>
+                    <a href="/contacto" class="hover:text-blue-200 transition font-medium">Contacto</a>
+
+                    {% if session.get('admin') %}
+                        <a href="/admin" class="hover:text-blue-200 transition font-medium text-sm">Panel</a>
+                        <a href="/logout" class="bg-rose-600 px-4 py-2 rounded-lg hover:bg-rose-700 transition text-sm font-bold shadow">Cerrar Sesión</a>
+                    {% else %}
+                        <a href="/login" class="bg-blue-800 px-4 py-2 rounded-lg hover:bg-blue-900 transition text-sm font-bold shadow">Acceso Junta</a>
+                    {% endif %}
+                </div>
+
+                <!-- Botón hamburguesa (solo móvil) -->
+                <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg hover:bg-blue-600 transition" aria-label="Abrir menú">
+                    <span id="bar1" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
+                    <span id="bar2" class="block w-6 h-0.5 bg-white mt-1.5 transition-all duration-300"></span>
+                    <span id="bar3" class="block w-6 h-0.5 bg-white mt-1.5 transition-all duration-300"></span>
+                </button>
+            </div>
+
+            <!-- Menú móvil desplegable -->
+            <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-300 ease-in-out">
+                <div class="py-3 space-y-1 border-t border-blue-600">
+                    <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
+                        <i class="fas fa-home w-5 text-center"></i> Inicio
+                    </a>
+                    <a href="/nosotros" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
+                        <i class="fas fa-users w-5 text-center"></i> Quiénes Somos
+                    </a>
+                    <a href="/contacto" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
+                        <i class="fas fa-envelope w-5 text-center"></i> Contacto
+                    </a>
+
+                    {% if session.get('admin') %}
+                        <a href="/admin" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
+                            <i class="fas fa-cog w-5 text-center"></i> Panel Admin
+                        </a>
+                        <a href="/logout" class="flex items-center gap-3 mx-4 mt-2 mb-1 px-4 py-3 bg-rose-600 rounded-lg hover:bg-rose-700 transition font-bold">
+                            <i class="fas fa-sign-out-alt w-5 text-center"></i> Cerrar Sesión
+                        </a>
+                    {% else %}
+                        <a href="/login" class="flex items-center gap-3 mx-4 mt-2 mb-1 px-4 py-3 bg-blue-800 rounded-lg hover:bg-blue-900 transition font-bold">
+                            <i class="fas fa-lock w-5 text-center"></i> Acceso Junta
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
 
-    <main class="container mx-auto flex-grow p-6">
+    <main class="container mx-auto flex-grow p-4 md:p-6">
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             {% for message in messages %}
@@ -52,6 +94,42 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        const btn = document.getElementById('menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const bar1 = document.getElementById('bar1');
+        const bar2 = document.getElementById('bar2');
+        const bar3 = document.getElementById('bar3');
+        let open = false;
+
+        btn.addEventListener('click', () => {
+            open = !open;
+            if (open) {
+                menu.style.maxHeight = menu.scrollHeight + 'px';
+                // Animación X
+                bar1.style.transform = 'translateY(8px) rotate(45deg)';
+                bar2.style.opacity = '0';
+                bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
+            } else {
+                menu.style.maxHeight = '0';
+                bar1.style.transform = '';
+                bar2.style.opacity = '1';
+                bar3.style.transform = '';
+            }
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.style.maxHeight = '0';
+                bar1.style.transform = '';
+                bar2.style.opacity = '1';
+                bar3.style.transform = '';
+                open = false;
+            });
+        });
+    </script>
 
 </body>
 </html>
