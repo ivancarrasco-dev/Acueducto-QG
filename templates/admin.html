@@ -74,6 +74,86 @@
         </div>
     </div>
 
+    <!-- SECCIÓN DOCUMENTOS PDF -->
+    <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-rose-500">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-rose-700">
+            <i class="fas fa-file-pdf"></i> Subir Documento PDF (Transparencia)
+        </h2>
+        <form action="/admin/documento/subir" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">Nombre del documento</label>
+                    <input type="text" name="nombre" placeholder="Ej: Acta de Asamblea No. 01 - 2026"
+                        class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">Categoria</label>
+                    <select name="categoria" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none bg-white">
+                        <option>Actas</option>
+                        <option>Tarifas</option>
+                        <option>Informes Financieros</option>
+                        <option>Calidad del Agua</option>
+                        <option>Contratos y Convenios</option>
+                        <option>General</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-1">Archivo PDF</label>
+                <input type="file" name="archivo" accept=".pdf"
+                    class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none" required>
+            </div>
+            <button type="submit" class="bg-rose-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-rose-700 shadow-md transition">
+                <i class="fas fa-upload mr-2"></i> Subir Documento
+            </button>
+        </form>
+    </div>
+
+    <!-- TABLA DOCUMENTOS -->
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div class="bg-rose-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Documentos Publicados</div>
+        {% if documentos %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-slate-100 text-slate-600 text-sm uppercase">
+                        <th class="p-4">Fecha</th>
+                        <th class="p-4">Nombre</th>
+                        <th class="p-4">Categoria</th>
+                        <th class="p-4 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    {% for doc in documentos %}
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4 text-slate-500 text-sm whitespace-nowrap">{{ doc.fecha.strftime('%d/%m/%Y') }}</td>
+                        <td class="p-4 font-bold text-slate-800">{{ doc.nombre }}</td>
+                        <td class="p-4">
+                            <span class="bg-rose-100 text-rose-700 text-xs font-bold px-2 py-1 rounded-lg">{{ doc.categoria }}</span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <a href="/documentos/{{ doc.ruta }}" target="_blank"
+                                    class="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-blue-600 hover:text-white transition">
+                                    Ver
+                                </a>
+                                <a href="/admin/documento/borrar/{{ doc.id }}"
+                                    onclick="return confirm('Seguro que desea eliminar este documento?')"
+                                    class="bg-rose-100 text-rose-600 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-rose-600 hover:text-white transition">
+                                    Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-8 text-center text-slate-400 italic">No hay documentos subidos aun.</div>
+        {% endif %}
+    </div>
+
     <!-- MENSAJES COMUNIDAD -->
     <div class="bg-white rounded-2xl shadow-md overflow-hidden">
         <div class="bg-blue-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Mensajes de la Comunidad</div>

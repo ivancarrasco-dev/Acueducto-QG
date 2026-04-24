@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-10">
+
+    <div class="bg-white p-10 rounded-2xl shadow-sm border-b-8 border-blue-600">
+        <h1 class="text-4xl font-black text-slate-900 mb-3 tracking-tight">Nuestros Servicios</h1>
+        <p class="text-lg text-slate-600 leading-relaxed">
+            Garantizamos el suministro de agua potable de calidad para todos los suscriptores de la vereda, con una atención oportuna y comprometida con el bienestar de la comunidad.
+        </p>
+    </div>
+
+    <!-- Grid de servicios -->
+    <div class="grid sm:grid-cols-2 gap-6">
+
+        <div class="bg-white p-7 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+            <div class="bg-blue-100 text-blue-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-4">
+                <i class="fas fa-tint text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Suministro de Agua Potable</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                Prestamos el servicio de distribución de agua potable de manera continua a todos los predios suscriptores de la vereda, garantizando calidad y presión adecuada según la normativa vigente.
+            </p>
+        </div>
+
+        <div class="bg-white p-7 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+            <div class="bg-emerald-100 text-emerald-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-4">
+                <i class="fas fa-tools text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Mantenimiento de Redes</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                Realizamos mantenimiento preventivo y correctivo de la red de tuberías, válvulas y accesorios para garantizar la continuidad del servicio y prevenir fugas que generen pérdidas de agua.
+            </p>
+        </div>
+
+        <div class="bg-white p-7 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+            <div class="bg-amber-100 text-amber-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-4">
+                <i class="fas fa-flask text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Control de Calidad del Agua</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                Realizamos análisis periódicos de la calidad del agua en cumplimiento de la Resolución 2115 del Ministerio de Salud, asegurando que el agua distribuida sea apta para el consumo humano.
+            </p>
+        </div>
+
+        <div class="bg-white p-7 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+            <div class="bg-purple-100 text-purple-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-4">
+                <i class="fas fa-file-invoice-dollar text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Facturación y Cobro</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                Emitimos cobros periódicos a los suscriptores con tarifas justas aprobadas en asamblea. Gestionamos la cartera y ofrecemos acuerdos de pago para quienes presenten dificultades.
+            </p>
+        </div>
+
+        <div class="bg-white p-7 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+            <div class="bg-rose-100 text-rose-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-4">
+                <i class="fas fa-exclamation-triangle text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Atención de Emergencias</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                Contamos con un protocolo de atención para emergencias como roturas de tubería, contaminación del agua o cortes imprevistos, con tiempos de respuesta prioritarios para restablecer el servicio.
+            </p>
+        </div>
+
+        <div class="bg-white p-7 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+            <div class="bg-teal-100 text-teal-600 w-14 h-14 rounded-2xl flex items-center justify-center mb-4">
+                <i class="fas fa-user-plus text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Nuevas Conexiones</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+                Tramitamos la vinculación de nuevos suscriptores al sistema de acueducto, verificando la disponibilidad técnica y cumpliendo los requisitos establecidos en el reglamento interno de la asociación.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Información de tarifas -->
+    <div class="bg-blue-50 border border-blue-200 p-8 rounded-2xl">
+        <h2 class="text-2xl font-black text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-info-circle text-blue-500"></i> Información importante
+        </h2>
+        <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-700">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                <p>Las tarifas vigentes están disponibles en la sección de <a href="/transparencia" class="text-blue-600 font-bold hover:underline">Transparencia</a>.</p>
+            </div>
+            <div class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                <p>Para reportar fallas técnicas use el <a href="/contacto" class="text-blue-600 font-bold hover:underline">formulario de contacto</a>.</p>
+            </div>
+            <div class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                <p>Los cortes programados se anuncian con anticipación en la sección de noticias.</p>
+            </div>
+            <div class="flex items-start gap-3">
+                <i class="fas fa-check-circle text-emerald-500 mt-0.5"></i>
+                <p>Horario de atención: Lunes a viernes, 8:00 a.m. – 12:00 m.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
