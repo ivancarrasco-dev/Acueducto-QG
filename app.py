@@ -123,6 +123,25 @@ def crear_noticia():
     flash("Noticia publicada con éxito.")
     return redirect(url_for('admin_noticias'))
 
+@app.route('/admin/noticia/editar/<int:id>', methods=['POST'])
+def editar_noticia(id):
+    if 'admin' not in session:
+        return redirect(url_for('login'))
+
+    noticia = Noticia.query.get_or_404(id)
+    noticia.titulo = request.form['titulo']
+    noticia.contenido = request.form['contenido']
+
+    archivo = request.files.get('imagen')
+    if archivo and allowed_file(archivo.filename):
+        filename = secure_filename(archivo.filename)
+        archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        noticia.imagen = filename
+
+    db.session.commit()
+    flash("Noticia actualizada correctamente.")
+    return redirect(url_for('admin_noticias'))
+
 @app.route('/admin/noticia/borrar/<int:id>')
 def borrar_noticia(id):
     if 'admin' not in session:
