@@ -423,6 +423,7 @@
     {% block content %}{% endblock %}
 </main>
 
+{% if request.path != "/admin" %}
 <footer>
     <div class="footer-inner">
         <div>
@@ -458,6 +459,7 @@
         <span>© 2026 Acueducto Quebrada Grande · Todos los derechos reservados</span>
     </div>
 </footer>
+{% endif %}
 
 <script>
     var btn = document.getElementById('menu-btn');
