@@ -1,24 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl mt-10 border border-slate-100">
-    <div class="text-center mb-8">
-        <i class="fas fa-lock text-4xl text-blue-600 mb-4"></i>
-        <h1 class="text-2xl font-black text-slate-900">Acceso Administrativo</h1>
-        <p class="text-slate-500 text-sm mt-2">Ingrese sus credenciales para gestionar el acueducto</p>
+<div style="max-width:400px; margin:60px auto; background:#fff; border:1px solid #e0ddd6; border-top:4px solid #0f2540; border-radius:2px; padding:40px 36px;">
+    <div style="text-align:center; margin-bottom:28px;">
+        <div style="background:#e8eef5; width:52px; height:52px; border-radius:2px; display:flex; align-items:center; justify-content:center; margin:0 auto 14px;">
+            <i class="fas fa-lock" style="color:#0f2540; font-size:20px;"></i>
+        </div>
+        <h1 style="font-size:18px; font-weight:700; color:#0f2540; text-transform:uppercase; letter-spacing:0.05em;">Acceso Administrativo</h1>
+        <p style="font-size:12px; font-weight:300; color:#5a7a96; margin-top:6px;">Ingrese sus credenciales para gestionar el portal</p>
     </div>
-
-    <form action="/login" method="POST" class="space-y-6">
+    <form action="/login" method="POST" style="display:flex; flex-direction:column; gap:16px;">
         <div>
-            <label class="block text-sm font-bold text-slate-700 mb-2">Usuario</label>
-            <input type="text" name="usuario" class="w-full bg-slate-50 border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" required>
+            <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#5a7a96; margin-bottom:6px;">Usuario</label>
+            <input type="text" name="usuario" required
+                style="width:100%; padding:12px 14px; border:1px solid #e0ddd6; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; outline:none; color:#1a1a2e; background:#fafaf8;">
         </div>
-        
         <div>
-            <label class="block text-sm font-bold text-slate-700 mb-2">Contraseña</label>
-            <input type="password" name="password" class="w-full bg-slate-50 border-slate-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition" required>
+            <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#5a7a96; margin-bottom:6px;">Contraseña</label>
+            <input type="password" name="password" required
+                style="width:100%; padding:12px 14px; border:1px solid #e0ddd6; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; outline:none; color:#1a1a2e; background:#fafaf8;">
         </div>
-
-        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-md hover:bg-blue-700 transition">
+        <button type="submit" class="btn-primary" style="width:100%; padding:14px; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-top:6px;">
             Iniciar Sesión
         </button>
     </form>

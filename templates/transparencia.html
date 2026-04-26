@@ -1,38 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="max-w-4xl mx-auto space-y-8">
 
-    <div class="bg-white p-10 rounded-2xl shadow-sm border-b-8 border-blue-600">
-        <h1 class="text-4xl font-black text-slate-900 mb-3 tracking-tight">Transparencia</h1>
-        <p class="text-lg text-slate-600 leading-relaxed">
-            Aquí encontrará todos los documentos oficiales de la asociación: actas de asamblea, informes financieros, tarifas vigentes y más. La transparencia es uno de nuestros valores fundamentales.
-        </p>
+<div style="background:#0f2540; padding:48px 24px 40px;">
+    <div style="max-width:1100px; margin:0 auto;">
+        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c8a84b; margin-bottom:10px;">Rendición de cuentas</p>
+        <h1 style="font-size:clamp(28px,4vw,42px); font-weight:900; color:#fff; line-height:1.2;">Transparencia</h1>
     </div>
+</div>
+
+<div class="container">
+    <p style="font-size:17px; font-weight:400; color:#333; line-height:1.85; max-width:640px; margin-bottom:40px;">
+        Aquí encontrará los documentos oficiales de la asociación: actas de asamblea, informes financieros, tarifas vigentes y más.
+    </p>
 
     {% if documentos %}
         {% set categorias = documentos | map(attribute='categoria') | unique | list %}
         {% for cat in categorias %}
-        <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100">
-            <div class="bg-slate-800 px-6 py-4 flex items-center gap-2">
-                <i class="fas fa-folder-open text-blue-400"></i>
-                <span class="text-white font-bold uppercase tracking-widest text-sm">{{ cat }}</span>
+        <div style="margin-bottom:32px;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                <div style="width:4px; height:22px; background:#2a7d4f; border-radius:2px;"></div>
+                <h2 style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0f2540;">{{ cat }}</h2>
             </div>
-            <div class="divide-y divide-slate-100">
+            <div style="background:#fff; border:1px solid #e0ddd6; border-radius:2px; overflow:hidden;">
                 {% for doc in documentos if doc.categoria == cat %}
-                <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-rose-100 text-rose-500 w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
-                            <i class="fas fa-file-pdf text-lg"></i>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #f0ece4; gap:16px; {% if loop.last %}border-bottom:none;{% endif %}">
+                    <div style="display:flex; align-items:center; gap:14px; min-width:0;">
+                        <div style="background:#fdf0f0; width:36px; height:36px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-file-pdf" style="color:#8b1a1a; font-size:14px;"></i>
                         </div>
-                        <div>
-                            <p class="font-bold text-slate-800">{{ doc.nombre }}</p>
-                            <p class="text-xs text-slate-400 mt-0.5">Subido el {{ doc.fecha.strftime('%d/%m/%Y') }}</p>
+                        <div style="min-width:0;">
+                            <p style="font-size:14px; font-weight:600; color:#0f2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ doc.nombre }}</p>
+                            <p style="font-size:11px; font-weight:300; color:#5a7a96; margin-top:2px;">Subido el {{ doc.fecha.strftime('%d/%m/%Y') }}</p>
                         </div>
                     </div>
-                    <a href="/documentos/{{ doc.ruta }}" target="_blank"
-                        class="flex items-center gap-2 bg-blue-600 text-white text-sm font-bold px-4 py-2 rounded-xl hover:bg-blue-700 transition shrink-0 ml-4">
-                        <i class="fas fa-download"></i>
-                        <span class="hidden sm:inline">Descargar</span>
+                    <a href="/documentos/{{ doc.ruta }}" target="_blank" class="btn-secondary" style="white-space:nowrap; font-size:11px; padding:9px 18px;">
+                        <i class="fas fa-download" style="margin-right:6px;"></i> Descargar
                     </a>
                 </div>
                 {% endfor %}
@@ -40,16 +42,16 @@
         </div>
         {% endfor %}
     {% else %}
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center">
-            <i class="fas fa-folder-open text-slate-300 text-5xl mb-4"></i>
-            <p class="text-slate-500 italic text-lg">Aún no hay documentos publicados.</p>
-            <p class="text-slate-400 text-sm mt-2">La junta directiva publicará los documentos próximamente.</p>
-        </div>
+    <div style="background:#fff; border:1px solid #e0ddd6; padding:56px; text-align:center; border-radius:2px;">
+        <i class="fas fa-folder-open" style="font-size:36px; color:#d0ccc2; display:block; margin-bottom:14px;"></i>
+        <p style="font-size:15px; font-weight:600; color:#0f2540; margin-bottom:6px;">Aún no hay documentos publicados</p>
+        <p style="font-size:15px; font-weight:400; color:#2d4a5e;">La junta directiva publicará los documentos próximamente.</p>
+    </div>
     {% endif %}
 
-    <div class="bg-blue-50 border border-blue-200 p-6 rounded-2xl text-center">
-        <p class="text-slate-700 text-sm">¿Necesita un documento que no encuentra aquí? <a href="/contacto" class="text-blue-600 font-bold hover:underline">Contáctenos</a> y con gusto le ayudamos.</p>
+    <div style="margin-top:36px; border:1px solid #e0ddd6; padding:22px 26px; border-radius:2px; display:flex; align-items:center; gap:14px; background:#fff;">
+        <i class="fas fa-info-circle" style="color:#2a7d4f; font-size:18px; flex-shrink:0;"></i>
+        <p style="font-size:13px; font-weight:300; color:#444; line-height:1.7;">¿Necesita un documento que no encuentra aquí? <a href="/contacto" style="color:#0f2540; font-weight:700; text-decoration:none;">Contáctenos</a> y con gusto le ayudamos.</p>
     </div>
-
 </div>
 {% endblock %}

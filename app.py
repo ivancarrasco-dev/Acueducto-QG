@@ -120,9 +120,8 @@ def admin_noticias():
         flash("Por favor, inicie sesión para acceder a esta área.")
         return redirect(url_for('login'))
     noticias = Noticia.query.order_by(Noticia.id.desc()).all()
-    mensajes = Mensaje.query.order_by(Mensaje.id.desc()).all()
     documentos = Documento.query.order_by(Documento.fecha.desc()).all()
-    return render_template('admin.html', noticias=noticias, mensajes=mensajes, documentos=documentos)
+    return render_template('admin.html', noticias=noticias, documentos=documentos)
 
 @app.route('/admin/noticia/nueva', methods=['POST'])
 def crear_noticia():

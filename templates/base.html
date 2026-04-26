@@ -3,166 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acueducto Rural - Gestión Comunitaria</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Acueducto Quebrada Grande</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-slate-50 flex flex-col min-h-screen text-slate-800">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <a href="/" class="text-lg font-bold flex items-center gap-2 shrink-0">
-                    <i class="fas fa-faucet-drip"></i>
-                    <span class="hidden sm:inline">ACUEDUCTO QUEBRADA GRANDE</span>
-                    <span class="sm:hidden">ACUEDUCTO</span>
-                </a>
+        :root {
+            --marino:   #0f2540;
+            --marino2:  #1a3a5c;
+            --dorado:   #c8a84b;
+            --verde:    #2a7d4f;
+            --verde2:   #22633f;
+            --gris:     #f5f4f0;
+            --texto:    #1a1a2e;
+            --suave:    #3a5a76;
+        }
 
-                <!-- Menú desktop -->
-                <div class="hidden md:flex items-center space-x-5">
-                    <a href="/" class="hover:text-blue-200 transition font-medium">Inicio</a>
-                    <a href="/nosotros" class="hover:text-blue-200 transition font-medium">Quiénes Somos</a>
-                    <a href="/servicios" class="hover:text-blue-200 transition font-medium">Servicios</a>
-                    <a href="/transparencia" class="hover:text-blue-200 transition font-medium">Transparencia</a>
-                    <a href="/contacto" class="hover:text-blue-200 transition font-medium">Contacto</a>
-                    {% if session.get('admin') %}
-                        <a href="/admin" class="hover:text-blue-200 transition font-medium text-sm">Panel</a>
-                        <a href="/logout" class="bg-rose-600 px-4 py-2 rounded-lg hover:bg-rose-700 transition text-sm font-bold shadow">Cerrar Sesión</a>
-                    {% else %}
-                        <a href="/login" class="bg-blue-800 px-4 py-2 rounded-lg hover:bg-blue-900 transition text-sm font-bold shadow">Acceso Junta</a>
-                    {% endif %}
-                </div>
+        body {
+            font-family: 'Montserrat', sans-serif; font-size: 17px;
+            background: var(--gris);
+            color: var(--texto);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-                <!-- Botón hamburguesa -->
-                <button id="menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg hover:bg-blue-600 transition" aria-label="Abrir menú">
-                    <span id="bar1" class="block w-6 h-0.5 bg-white transition-all duration-300"></span>
-                    <span id="bar2" class="block w-6 h-0.5 bg-white mt-1.5 transition-all duration-300"></span>
-                    <span id="bar3" class="block w-6 h-0.5 bg-white mt-1.5 transition-all duration-300"></span>
-                </button>
-            </div>
+        /* ── NAVBAR ── */
+        nav {
+            background: var(--marino);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 68px;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .nav-logo-icon {
+            color: var(--dorado);
+            font-size: 18px;
+        }
+        .nav-logo-text {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .nav-logo-text span {
+            display: none;
+        }
+        @media (min-width: 500px) {
+            .nav-logo-text span { display: inline; }
+        }
 
-            <!-- Menú móvil -->
-            <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-300 ease-in-out">
-                <div class="py-3 space-y-1 border-t border-blue-600">
-                    <a href="/" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
-                        <i class="fas fa-home w-5 text-center"></i> Inicio
-                    </a>
-                    <a href="/nosotros" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
-                        <i class="fas fa-users w-5 text-center"></i> Quiénes Somos
-                    </a>
-                    <a href="/servicios" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
-                        <i class="fas fa-wrench w-5 text-center"></i> Servicios
-                    </a>
-                    <a href="/transparencia" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
-                        <i class="fas fa-file-alt w-5 text-center"></i> Transparencia
-                    </a>
-                    <a href="/contacto" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
-                        <i class="fas fa-envelope w-5 text-center"></i> Contacto
-                    </a>
-                    {% if session.get('admin') %}
-                        <a href="/admin" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-600 transition font-medium">
-                            <i class="fas fa-cog w-5 text-center"></i> Panel Admin
-                        </a>
-                        <a href="/logout" class="flex items-center gap-3 mx-4 mt-2 mb-1 px-4 py-3 bg-rose-600 rounded-lg hover:bg-rose-700 transition font-bold">
-                            <i class="fas fa-sign-out-alt w-5 text-center"></i> Cerrar Sesión
-                        </a>
-                    {% else %}
-                        <a href="/login" class="flex items-center gap-3 mx-4 mt-2 mb-1 px-4 py-3 bg-blue-800 rounded-lg hover:bg-blue-900 transition font-bold">
-                            <i class="fas fa-lock w-5 text-center"></i> Acceso Junta
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </nav>
+        /* Links desktop */
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: 28px;
+        }
+        @media (min-width: 820px) {
+            .nav-links { display: flex; }
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-btn {
+            background: var(--dorado);
+            color: var(--marino) !important;
+            padding: 8px 18px;
+            border-radius: 2px;
+            font-weight: 700 !important;
+        }
+        .nav-btn-danger {
+            background: #8b1a1a;
+            color: #fff !important;
+            padding: 8px 18px;
+            border-radius: 2px;
+            font-weight: 700 !important;
+        }
 
-    <main class="container mx-auto flex-grow p-4 md:p-6">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <div class="bg-emerald-100 border-l-4 border-emerald-500 text-emerald-700 p-4 mb-6 rounded shadow-sm">
-                  {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </main>
+        /* Hamburguesa */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 36px;
+            height: 36px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        @media (min-width: 820px) { .hamburger { display: none; } }
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.28s;
+        }
 
-    <footer class="bg-slate-900 text-slate-400 p-10 mt-10">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <p class="font-bold text-white text-lg mb-2 flex items-center gap-2">
-                        <i class="fas fa-faucet-drip text-blue-400"></i> Acueducto Quebrada Grande
-                    </p>
-                    <p class="text-sm">Asociación comunitaria al servicio del acceso al agua potable de nuestra vereda.</p>
-                </div>
-                <div>
-                    <p class="font-bold text-white mb-3">Navegación</p>
-                    <div class="space-y-1 text-sm">
-                        <a href="/" class="block hover:text-white transition">Inicio</a>
-                        <a href="/nosotros" class="block hover:text-white transition">Quiénes Somos</a>
-                        <a href="/servicios" class="block hover:text-white transition">Servicios</a>
-                        <a href="/transparencia" class="block hover:text-white transition">Transparencia</a>
-                        <a href="/contacto" class="block hover:text-white transition">Contacto</a>
-                    </div>
-                </div>
-                <div>
-                    <p class="font-bold text-white mb-3">Contacto</p>
-                    <div class="space-y-2 text-sm">
-                        <p><i class="fas fa-map-marker-alt text-blue-400 mr-2"></i> Vereda Quebrada Grande, San Antonio del Tequendama</p>
-                        <p><i class="fas fa-clock text-blue-400 mr-2"></i> Lun – Vie, 8:00 a.m. – 12:00 m.</p>
-                    </div>
-                    <!-- Redes sociales -->
-                    <div class="flex gap-3 mt-4">
-                        <a href="#" class="bg-blue-600 hover:bg-blue-500 text-white w-9 h-9 rounded-full flex items-center justify-center transition" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="bg-green-600 hover:bg-green-500 text-white w-9 h-9 rounded-full flex items-center justify-center transition" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-slate-700 pt-6 text-center text-xs">
-                Desarrollado por Iván Carrasco - Tecnólogo SENA &nbsp;·&nbsp; {{ 2026 }} Acueducto Quebrada Grande
-            </div>
-        </div>
-    </footer>
+        /* Menú móvil */
+        .mobile-menu {
+            background: var(--marino2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.32s ease;
+        }
+        .mobile-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            transition: background 0.2s;
+        }
+        .mobile-menu a:hover { background: rgba(255,255,255,0.06); }
+        .mobile-menu a i { width: 18px; text-align: center; color: var(--dorado); font-size: 13px; }
+        .mobile-btn-admin {
+            background: var(--dorado);
+            color: var(--marino) !important;
+            margin: 12px 24px;
+            border-radius: 2px;
+            justify-content: center !important;
+            border-bottom: none !important;
+        }
+        .mobile-btn-logout {
+            background: #8b1a1a;
+            color: #fff !important;
+            margin: 12px 24px;
+            border-radius: 2px;
+            justify-content: center !important;
+            border-bottom: none !important;
+        }
 
-    <script>
-        const btn = document.getElementById('menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        const bar1 = document.getElementById('bar1');
-        const bar2 = document.getElementById('bar2');
-        const bar3 = document.getElementById('bar3');
-        let open = false;
+        /* ── FLASH ── */
+        .flash-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 360px;
+            width: calc(100% - 40px);
+        }
+        .flash {
+            background: #fff;
+            border-left: 5px solid var(--verde);
+            color: #1a4731;
+            padding: 16px 44px 16px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 3px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+        .flash-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #5a7a96;
+            line-height: 1;
+            padding: 0;
+        }
+        .flash.fade-out {
+            animation: fadeOut 0.4s ease forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(40px); }
+        }
 
-        btn.addEventListener('click', () => {
-            open = !open;
-            if (open) {
-                menu.style.maxHeight = menu.scrollHeight + 'px';
-                bar1.style.transform = 'translateY(8px) rotate(45deg)';
-                bar2.style.opacity = '0';
-                bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
-            } else {
-                menu.style.maxHeight = '0';
-                bar1.style.transform = '';
-                bar2.style.opacity = '1';
-                bar3.style.transform = '';
+        /* ── MAIN ── */
+        main {
+            flex-grow: 1;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #0a1c33;
+            color: #7a9ab4;
+            padding: 48px 24px 28px;
+            margin-top: 60px;
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+        @media (min-width: 640px) {
+            .footer-inner { grid-template-columns: 1.5fr 1fr 1fr; }
+        }
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .footer-brand i { color: var(--dorado); font-size: 16px; }
+        .footer-brand span { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+        .footer-desc { font-size: 15px; font-weight: 400; line-height: 1.8; color: #8ab0cc; }
+        .footer-social { display: flex; gap: 10px; margin-top: 16px; }
+        .footer-social a {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 1px solid #1e3a5c;
+            display: flex; align-items: center; justify-content: center;
+            color: #5a7a96;
+            text-decoration: none;
+            font-size: 13px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .footer-social a:hover { border-color: var(--dorado); color: var(--dorado); }
+        .footer-heading {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #94b8d4;
+            margin-bottom: 16px;
+        }
+        .footer-links { display: flex; flex-direction: column; gap: 8px; }
+        .footer-links a {
+            color: #8ab0cc;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: #fff; }
+        .footer-info { font-size: 15px; font-weight: 400; line-height: 1.9; color: #8ab0cc; }
+        .footer-info i { color: var(--dorado); margin-right: 8px; font-size: 13px; }
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 28px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #1e3a5c;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 400;
+            text-align: center;
+            color: #5a7a96;
+        }
+        @media (min-width: 640px) {
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
             }
-        });
+        }
 
-        menu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.style.maxHeight = '0';
-                bar1.style.transform = '';
-                bar2.style.opacity = '1';
-                bar3.style.transform = '';
-                open = false;
-            });
+        /* ── UTILIDADES ── */
+        .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--verde);
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--marino);
+            margin-bottom: 28px;
+        }
+        .btn-primary {
+            display: inline-block;
+            background: var(--dorado);
+            color: var(--marino);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 15px 32px;
+            border-radius: 2px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #b8942e; }
+        .btn-secondary {
+            display: inline-block;
+            background: var(--verde);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 15px 32px;
+            border-radius: 2px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: var(--verde2); }
+        .clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .btn-outline {
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 14px 28px;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-outline:hover { border-color: #fff; color: #fff; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="nav-logo">
+            <i class="fas fa-tint nav-logo-icon"></i>
+            <span class="nav-logo-text">Acueducto <span>Quebrada Grande</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/nosotros">Quiénes Somos</a>
+            <a href="/servicios">Servicios</a>
+            <a href="/transparencia">Transparencia</a>
+            <a href="/contacto">Contacto</a>
+            {% if session.get('admin') %}
+                <a href="/admin">Panel</a>
+                <a href="/logout" class="nav-btn-danger">Cerrar Sesión</a>
+            {% else %}
+                <a href="/login" class="nav-btn">Acceso Junta</a>
+            {% endif %}
+        </div>
+        <button class="hamburger" id="menu-btn" aria-label="Menú">
+            <span id="b1"></span><span id="b2"></span><span id="b3"></span>
+        </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="/"><i class="fas fa-home"></i> Inicio</a>
+        <a href="/nosotros"><i class="fas fa-users"></i> Quiénes Somos</a>
+        <a href="/servicios"><i class="fas fa-wrench"></i> Servicios</a>
+        <a href="/transparencia"><i class="fas fa-file-alt"></i> Transparencia</a>
+        <a href="/contacto"><i class="fas fa-envelope"></i> Contacto</a>
+        {% if session.get('admin') %}
+            <a href="/admin"><i class="fas fa-cog"></i> Panel Admin</a>
+            <a href="/logout" class="mobile-btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        {% else %}
+            <a href="/login" class="mobile-btn-admin"><i class="fas fa-lock"></i> Acceso Junta</a>
+        {% endif %}
+    </div>
+</nav>
+
+<main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="max-width:1100px;margin:0 auto;padding:20px 20px 0;">
+          {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <div>
+            <div class="footer-brand">
+                <i class="fas fa-tint"></i>
+                <span>Acueducto Quebrada Grande</span>
+            </div>
+            <p class="footer-desc">Asociación comunitaria sin ánimo de lucro comprometida con el acceso al agua potable para todos los suscriptores de la vereda.</p>
+            <div class="footer-social">
+                <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div>
+            <p class="footer-heading">Navegación</p>
+            <div class="footer-links">
+                <a href="/">Inicio</a>
+                <a href="/nosotros">Quiénes Somos</a>
+                <a href="/servicios">Servicios</a>
+                <a href="/transparencia">Transparencia</a>
+                <a href="/contacto">Contacto</a>
+            </div>
+        </div>
+        <div>
+            <p class="footer-heading">Contacto</p>
+            <p class="footer-info">
+                <i class="fas fa-map-marker-alt"></i>Vereda Quebrada Grande, San Antonio del Tequendama<br><br>
+                <i class="fas fa-clock"></i>Lun – Vie · 8:00 a.m. – 12:00 m.
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Acueducto Quebrada Grande · Todos los derechos reservados</span>
+    </div>
+</footer>
+
+<script>
+    var btn = document.getElementById('menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    var b1 = document.getElementById('b1');
+    var b2 = document.getElementById('b2');
+    var b3 = document.getElementById('b3');
+    var open = false;
+    btn.addEventListener('click', function() {
+        open = !open;
+        menu.style.maxHeight = open ? menu.scrollHeight + 'px' : '0';
+        b1.style.transform = open ? 'translateY(7px) rotate(45deg)' : '';
+        b2.style.opacity = open ? '0' : '1';
+        b3.style.transform = open ? 'translateY(-7px) rotate(-45deg)' : '';
+    });
+    menu.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+            open = false;
+            menu.style.maxHeight = '0';
+            b1.style.transform = ''; b2.style.opacity = '1'; b3.style.transform = '';
         });
-    </script>
+    });
+</script>
+
+<script>
+    function dismissFlash(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('fade-out');
+        setTimeout(function() { el.remove(); }, 400);
+    }
+
+    // Auto-dismiss after 10 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        var flashes = document.querySelectorAll('.flash');
+        flashes.forEach(function(flash) {
+            setTimeout(function() {
+                flash.classList.add('fade-out');
+                setTimeout(function() { flash.remove(); }, 400);
+            }, 10000);
+        });
+    });
+</script>
 </body>
 </html>

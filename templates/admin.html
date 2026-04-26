@@ -1,209 +1,221 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="max-w-5xl mx-auto space-y-10">
-    <div class="flex justify-between items-end border-b pb-4">
-        <h1 class="text-3xl font-black text-slate-900">Panel de Administración</h1>
-        <p class="text-slate-500 font-medium italic">Acceso exclusivo para la junta</p>
+<div style="max-width:960px; margin:0 auto; padding:24px 16px; font-family:'Montserrat',sans-serif;">
+
+    <!-- ENCABEZADO -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:14px; border-bottom:2px solid #0f2540;">
+        <h1 style="font-size:18px; font-weight:700; color:#0f2540; margin:0;">Panel de Administración</h1>
+        <a href="/logout" style="font-size:12px; font-weight:600; color:#8b1a1a; text-decoration:none; border:1px solid #f5c6c6; padding:6px 14px; border-radius:2px;">
+            Cerrar sesión
+        </a>
     </div>
 
-    <!-- FORMULARIO NUEVA NOTICIA -->
-    <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-emerald-500">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-emerald-700">
-            <i class="fas fa-plus-circle"></i> Publicar Nueva Noticia o Aviso
-        </h2>
-        <form action="/admin/noticia/nueva" method="POST" enctype="multipart/form-data" class="space-y-4">
-            <input type="text" name="titulo" placeholder="Título impactante (Ej: Mañana Corte de Agua)" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" required>
-            <textarea name="contenido" rows="4" placeholder="Escriba aquí los detalles..." class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" required></textarea>
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Imagen (opcional)</label>
-                <input type="file" name="imagen" accept="image/*" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
+    <!-- TABS -->
+    <div style="display:flex; gap:0; border-bottom:2px solid #e0ddd6; margin-bottom:24px;">
+        <button onclick="mostrarTab('tab-noticias')" id="btn-noticias"
+            style="padding:10px 20px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; border:none; cursor:pointer; background:#0f2540; color:#fff; border-radius:2px 2px 0 0;">
+            Noticias
+        </button>
+        <button onclick="mostrarTab('tab-documentos')" id="btn-documentos"
+            style="padding:10px 20px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; border:none; cursor:pointer; background:#f5f4f0; color:#5a7a96; border-radius:2px 2px 0 0; margin-left:4px;">
+            Documentos PDF
+        </button>
+    </div>
+
+    <!-- ══ TAB NOTICIAS ══ -->
+    <div id="tab-noticias">
+
+        <!-- Formulario nueva noticia -->
+        <form action="/admin/noticia/nueva" method="POST" enctype="multipart/form-data"
+            style="background:#f5f4f0; border:1px solid #ddd; padding:16px; border-radius:2px; margin-bottom:20px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div style="grid-column:1/-1;">
+                <input type="text" name="titulo" placeholder="Título del aviso" required autofocus
+                    style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none;">
             </div>
-            <button type="submit" class="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 shadow-md transition">
-                Publicar Ahora
-            </button>
+            <div style="grid-column:1/-1;">
+                <textarea name="contenido" rows="3" placeholder="Contenido del aviso..." required
+                    style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none; resize:vertical;"></textarea>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <label style="font-size:12px; font-weight:600; color:#666; white-space:nowrap;">Imagen:</label>
+                <input type="file" name="imagen" accept="image/*" style="font-size:12px; flex:1;">
+            </div>
+            <div style="display:flex; align-items:center; justify-content:flex-end;">
+                <button type="submit"
+                    style="background:#2a7d4f; color:#fff; border:none; padding:10px 24px; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; cursor:pointer; letter-spacing:0.04em;">
+                    ＋ Publicar noticia
+                </button>
+            </div>
         </form>
-    </div>
 
-    <!-- TABLA NOTICIAS -->
-    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-        <div class="bg-slate-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Noticias Publicadas</div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="bg-slate-100 text-slate-600 text-sm uppercase">
-                        <th class="p-4">Fecha</th>
-                        <th class="p-4">Título</th>
-                        <th class="p-4 text-center">Imagen</th>
-                        <th class="p-4 text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y">
-                    {% for n in noticias %}
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-4 text-slate-500 text-sm whitespace-nowrap">{{ n.fecha.strftime('%d/%m/%Y') }}</td>
-                        <td class="p-4 font-bold text-slate-800">{{ n.titulo }}</td>
-                        <td class="p-4 text-center">
-                            {% if n.imagen %}
-                                <img src="{{ url_for('static', filename='uploads/' ~ n.imagen) }}" alt="imagen" class="h-12 w-20 object-cover rounded-lg mx-auto">
-                            {% else %}
-                                <span class="text-slate-400 text-xs italic">Sin imagen</span>
-                            {% endif %}
-                        </td>
-                        <td class="p-4 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <!-- Botón Editar -->
-                                <button
-                                    class="btn-editar bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-amber-500 hover:text-white transition"
+        <!-- Tabla noticias -->
+        <div style="background:#fff; border:1px solid #ddd; border-radius:2px; overflow:hidden;">
+            <div style="background:#0f2540; padding:10px 16px;">
+                <span style="font-size:12px; font-weight:700; color:#fff; letter-spacing:0.08em; text-transform:uppercase;">
+                    {{ noticias|length }} noticia{% if noticias|length != 1 %}s{% endif %} publicada{% if noticias|length != 1 %}s{% endif %}
+                </span>
+            </div>
+            {% if noticias %}
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                    <thead>
+                        <tr style="background:#f8f8f6; border-bottom:1px solid #e0ddd6;">
+                            <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap;">Fecha</th>
+                            <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em;">Título</th>
+                            <th style="padding:10px 14px; text-align:center; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em;">Img</th>
+                            <th style="padding:10px 14px; text-align:center; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for n in noticias %}
+                        <tr style="border-bottom:1px solid #f0ece4;">
+                            <td style="padding:10px 14px; color:#666; white-space:nowrap; font-size:13px;">{{ n.fecha.strftime('%d/%m/%Y') }}</td>
+                            <td style="padding:10px 14px; font-weight:600; color:#0f2540; max-width:300px;">{{ n.titulo }}</td>
+                            <td style="padding:10px 14px; text-align:center;">
+                                {% if n.imagen %}
+                                    <img src="{{ url_for('static', filename='uploads/' ~ n.imagen) }}" style="height:32px; width:52px; object-fit:cover; border-radius:2px; display:inline-block; vertical-align:middle;">
+                                {% else %}
+                                    <span style="font-size:11px; color:#ccc;">—</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding:10px 14px; text-align:center; white-space:nowrap;">
+                                <button class="btn-editar"
                                     data-id="{{ n.id }}"
                                     data-titulo="{{ n.titulo | e }}"
-                                    data-contenido="{{ n.contenido | e }}">
+                                    data-contenido="{{ n.contenido | e }}"
+                                    style="background:#fff3cd; color:#856404; border:1px solid #ffc107; padding:5px 12px; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; cursor:pointer; margin-right:4px;">
                                     Editar
                                 </button>
-                                <!-- Botón Eliminar -->
                                 <a href="/admin/noticia/borrar/{{ n.id }}"
-                                   onclick="return confirm('¿Seguro que desea eliminar esta noticia?')"
-                                   class="bg-rose-100 text-rose-600 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-rose-600 hover:text-white transition">
+                                    onclick="return confirm('¿Eliminar esta noticia?')"
+                                    style="background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:5px 12px; border-radius:2px; font-size:12px; font-weight:700; text-decoration:none;">
                                     Eliminar
                                 </a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div style="padding:24px; text-align:center; color:#999; font-size:14px; font-style:italic;">No hay noticias publicadas.</div>
+            {% endif %}
         </div>
     </div>
 
-    <!-- SECCIÓN DOCUMENTOS PDF -->
-    <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-rose-500">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-rose-700">
-            <i class="fas fa-file-pdf"></i> Subir Documento PDF (Transparencia)
-        </h2>
-        <form action="/admin/documento/subir" method="POST" enctype="multipart/form-data" class="space-y-4">
-            <div class="grid sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1">Nombre del documento</label>
-                    <input type="text" name="nombre" placeholder="Ej: Acta de Asamblea No. 01 - 2026"
-                        class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none" required>
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1">Categoria</label>
-                    <select name="categoria" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none bg-white">
-                        <option>Actas</option>
-                        <option>Tarifas</option>
-                        <option>Informes Financieros</option>
-                        <option>Calidad del Agua</option>
-                        <option>Contratos y Convenios</option>
-                        <option>General</option>
-                    </select>
-                </div>
+    <!-- ══ TAB DOCUMENTOS ══ -->
+    <div id="tab-documentos" style="display:none;">
+
+        <!-- Formulario subir PDF -->
+        <form action="/admin/documento/subir" method="POST" enctype="multipart/form-data"
+            style="background:#f5f4f0; border:1px solid #ddd; padding:16px; border-radius:2px; margin-bottom:20px; display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:end;">
+            <div>
+                <label style="display:block; font-size:11px; font-weight:700; color:#666; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em;">Nombre del documento</label>
+                <input type="text" name="nombre" placeholder="Ej: Acta No. 01 - 2026" required
+                    style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none;">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Archivo PDF</label>
-                <input type="file" name="archivo" accept=".pdf"
-                    class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none" required>
+                <label style="display:block; font-size:11px; font-weight:700; color:#666; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em;">Categoría</label>
+                <select name="categoria"
+                    style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none; background:#fff;">
+                    <option>Actas</option>
+                    <option>Tarifas</option>
+                    <option>Informes Financieros</option>
+                    <option>Calidad del Agua</option>
+                    <option>Contratos y Convenios</option>
+                    <option>General</option>
+                </select>
             </div>
-            <button type="submit" class="bg-rose-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-rose-700 shadow-md transition">
-                <i class="fas fa-upload mr-2"></i> Subir Documento
-            </button>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <label style="font-size:12px; font-weight:600; color:#666; white-space:nowrap;">Archivo PDF:</label>
+                <input type="file" name="archivo" accept=".pdf" required style="font-size:12px; flex:1;">
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+                <button type="submit"
+                    style="background:#c8a84b; color:#0f2540; border:none; padding:10px 24px; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; cursor:pointer; letter-spacing:0.04em;">
+                    ＋ Subir PDF
+                </button>
+            </div>
         </form>
-    </div>
 
-    <!-- TABLA DOCUMENTOS -->
-    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-        <div class="bg-rose-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Documentos Publicados</div>
-        {% if documentos %}
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="bg-slate-100 text-slate-600 text-sm uppercase">
-                        <th class="p-4">Fecha</th>
-                        <th class="p-4">Nombre</th>
-                        <th class="p-4">Categoria</th>
-                        <th class="p-4 text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y">
-                    {% for doc in documentos %}
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-4 text-slate-500 text-sm whitespace-nowrap">{{ doc.fecha.strftime('%d/%m/%Y') }}</td>
-                        <td class="p-4 font-bold text-slate-800">{{ doc.nombre }}</td>
-                        <td class="p-4">
-                            <span class="bg-rose-100 text-rose-700 text-xs font-bold px-2 py-1 rounded-lg">{{ doc.categoria }}</span>
-                        </td>
-                        <td class="p-4 text-center">
-                            <div class="flex items-center justify-center gap-2">
+        <!-- Tabla documentos -->
+        <div style="background:#fff; border:1px solid #ddd; border-radius:2px; overflow:hidden;">
+            <div style="background:#9a7b1a; padding:10px 16px;">
+                <span style="font-size:12px; font-weight:700; color:#fff; letter-spacing:0.08em; text-transform:uppercase;">
+                    {{ documentos|length }} documento{% if documentos|length != 1 %}s{% endif %} publicado{% if documentos|length != 1 %}s{% endif %}
+                </span>
+            </div>
+            {% if documentos %}
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                    <thead>
+                        <tr style="background:#f8f8f6; border-bottom:1px solid #e0ddd6;">
+                            <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap;">Fecha</th>
+                            <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em;">Nombre</th>
+                            <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em;">Categoría</th>
+                            <th style="padding:10px 14px; text-align:center; font-size:11px; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:0.06em;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documentos %}
+                        <tr style="border-bottom:1px solid #f0ece4;">
+                            <td style="padding:10px 14px; color:#666; white-space:nowrap; font-size:13px;">{{ doc.fecha.strftime('%d/%m/%Y') }}</td>
+                            <td style="padding:10px 14px; font-weight:600; color:#0f2540; max-width:280px;">{{ doc.nombre }}</td>
+                            <td style="padding:10px 14px;">
+                                <span style="background:#fdf3d8; color:#856404; font-size:11px; font-weight:700; padding:3px 8px; border-radius:2px;">{{ doc.categoria }}</span>
+                            </td>
+                            <td style="padding:10px 14px; text-align:center; white-space:nowrap;">
                                 <a href="/documentos/{{ doc.ruta }}" target="_blank"
-                                    class="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-blue-600 hover:text-white transition">
+                                    style="background:#d1ecf1; color:#0c5460; border:1px solid #bee5eb; padding:5px 12px; border-radius:2px; font-size:12px; font-weight:700; text-decoration:none; margin-right:4px;">
                                     Ver
                                 </a>
                                 <a href="/admin/documento/borrar/{{ doc.id }}"
-                                    onclick="return confirm('Seguro que desea eliminar este documento?')"
-                                    class="bg-rose-100 text-rose-600 px-3 py-1 rounded-lg text-xs font-black uppercase hover:bg-rose-600 hover:text-white transition">
+                                    onclick="return confirm('¿Eliminar este documento?')"
+                                    style="background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:5px 12px; border-radius:2px; font-size:12px; font-weight:700; text-decoration:none;">
                                     Eliminar
                                 </a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="p-8 text-center text-slate-400 italic">No hay documentos subidos aun.</div>
-        {% endif %}
-    </div>
-
-    <!-- MENSAJES COMUNIDAD -->
-    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-        <div class="bg-blue-800 p-4 text-white font-bold uppercase tracking-widest text-sm">Mensajes de la Comunidad</div>
-        <div class="divide-y">
-            {% for m in mensajes %}
-            <div class="p-6 hover:bg-slate-50 transition">
-                <div class="flex justify-between mb-2">
-                    <span class="font-bold text-blue-700">{{ m.nombre }}</span>
-                    <span class="text-xs text-slate-400">{{ m.fecha.strftime('%d/%m/%Y %H:%M') }}</span>
-                </div>
-                <p class="text-xs text-slate-500 mb-2"><strong>Correo:</strong> {{ m.correo }} | <strong>Asunto:</strong> {{ m.asunto }}</p>
-                <p class="text-slate-700">{{ m.mensaje }}</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% endfor %}
+            {% else %}
+            <div style="padding:24px; text-align:center; color:#999; font-size:14px; font-style:italic;">No hay documentos publicados.</div>
+            {% endif %}
         </div>
     </div>
 </div>
 
-<!-- MODAL DE EDICIÓN -->
-<div id="modal-editar" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
-        <div class="bg-amber-500 p-5 flex justify-between items-center">
-            <h3 class="text-white font-black text-xl flex items-center gap-2">
-                <i class="fas fa-pen"></i> Editar Noticia
-            </h3>
-            <button onclick="cerrarModal()" class="text-white hover:text-amber-100 text-2xl leading-none">&times;</button>
+<!-- MODAL EDITAR -->
+<div id="modal-editar" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.5); padding:16px; align-items:center; justify-content:center;">
+    <div style="background:#fff; width:100%; max-width:480px; border-radius:2px; overflow:hidden; border-top:4px solid #c8a84b;">
+        <div style="background:#f8f8f6; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd;">
+            <span style="font-size:14px; font-weight:700; color:#0f2540;">Editar noticia</span>
+            <button onclick="cerrarModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#999; line-height:1;">&times;</button>
         </div>
-        <form id="form-editar" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+        <form id="form-editar" method="POST" enctype="multipart/form-data" style="padding:18px; display:flex; flex-direction:column; gap:12px;">
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Título</label>
-                <input type="text" id="edit-titulo" name="titulo"
-                    class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none" required>
+                <label style="display:block; font-size:11px; font-weight:700; color:#666; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em;">Título</label>
+                <input type="text" id="edit-titulo" name="titulo" required
+                    style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none;">
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Contenido</label>
-                <textarea id="edit-contenido" name="contenido" rows="5"
-                    class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none" required></textarea>
+                <label style="display:block; font-size:11px; font-weight:700; color:#666; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em;">Contenido</label>
+                <textarea id="edit-contenido" name="contenido" rows="5" required
+                    style="width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; outline:none; resize:vertical;"></textarea>
             </div>
             <div>
-                <label class="block text-sm font-bold text-slate-700 mb-1">Nueva imagen (opcional, deje vacío para mantener la actual)</label>
-                <input type="file" name="imagen" accept="image/*"
-                    class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
+                <label style="display:block; font-size:11px; font-weight:700; color:#666; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.06em;">Nueva imagen (opcional)</label>
+                <input type="file" name="imagen" accept="image/*" style="font-size:13px;">
             </div>
-            <div class="flex gap-3 pt-2">
+            <div style="display:flex; gap:8px; padding-top:4px;">
                 <button type="submit"
-                    class="flex-1 bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600 transition shadow">
-                    <i class="fas fa-save mr-2"></i> Guardar Cambios
+                    style="flex:1; padding:11px; background:#2a7d4f; color:#fff; border:none; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; cursor:pointer;">
+                    Guardar cambios
                 </button>
                 <button type="button" onclick="cerrarModal()"
-                    class="flex-1 bg-slate-100 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-200 transition">
+                    style="flex:1; padding:11px; background:#f5f4f0; color:#555; border:1px solid #ddd; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:600; cursor:pointer;">
                     Cancelar
                 </button>
             </div>
@@ -212,35 +224,39 @@
 </div>
 
 <script>
-    const modal = document.getElementById('modal-editar');
+    // Tabs
+    function mostrarTab(tabId) {
+        ['tab-noticias', 'tab-documentos'].forEach(function(id) {
+            document.getElementById(id).style.display = id === tabId ? 'block' : 'none';
+        });
+        var btnNoticias = document.getElementById('btn-noticias');
+        var btnDocs = document.getElementById('btn-documentos');
+        if (tabId === 'tab-noticias') {
+            btnNoticias.style.background = '#0f2540'; btnNoticias.style.color = '#fff';
+            btnDocs.style.background = '#f5f4f0'; btnDocs.style.color = '#5a7a96';
+        } else {
+            btnDocs.style.background = '#0f2540'; btnDocs.style.color = '#fff';
+            btnNoticias.style.background = '#f5f4f0'; btnNoticias.style.color = '#5a7a96';
+        }
+    }
 
-    // Usar event delegation con data-attributes — evita conflictos con Prettier/linters
+    // Modal editar
+    var modal = document.getElementById('modal-editar');
     document.querySelectorAll('.btn-editar').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const titulo = this.getAttribute('data-titulo');
-            const contenido = this.getAttribute('data-contenido');
-            document.getElementById('form-editar').action = '/admin/noticia/editar/' + id;
-            document.getElementById('edit-titulo').value = titulo;
-            document.getElementById('edit-contenido').value = contenido;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            document.getElementById('form-editar').action = '/admin/noticia/editar/' + this.getAttribute('data-id');
+            document.getElementById('edit-titulo').value    = this.getAttribute('data-titulo');
+            document.getElementById('edit-contenido').value = this.getAttribute('data-contenido');
+            modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         });
     });
 
     function cerrarModal() {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        modal.style.display = 'none';
         document.body.style.overflow = '';
     }
-
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) cerrarModal();
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') cerrarModal();
-    });
+    modal.addEventListener('click', function(e) { if (e.target === modal) cerrarModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') cerrarModal(); });
 </script>
 {% endblock %}
