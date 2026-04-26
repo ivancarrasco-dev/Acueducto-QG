@@ -77,8 +77,13 @@ def logout():
 # --- RUTAS PÚBLICAS ---
 @app.route('/')
 def index():
-    noticias = Noticia.query.order_by(Noticia.id.desc()).all()
+    noticias = Noticia.query.order_by(Noticia.id.desc()).limit(3).all()
     return render_template('index.html', noticias=noticias)
+
+@app.route('/noticias')
+def noticias():
+    noticias = Noticia.query.order_by(Noticia.id.desc()).all()
+    return render_template('noticias.html', noticias=noticias)
 
 @app.route('/nosotros')
 def nosotros():
@@ -103,6 +108,11 @@ def enviar_contacto():
     db.session.commit()
     flash("¡Gracias! Su mensaje ha sido enviado a la administración.")
     return redirect(url_for('index'))
+
+@app.route('/noticias')
+def todas_noticias():
+    noticias = Noticia.query.order_by(Noticia.id.desc()).all()
+    return render_template('noticias.html', noticias=noticias)
 
 @app.route('/transparencia')
 def transparencia():

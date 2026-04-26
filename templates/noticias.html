@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="background:#0f2540; padding:48px 24px 40px;">
+    <div style="max-width:1100px; margin:0 auto;">
+        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c8a84b; margin-bottom:10px;">Historial completo</p>
+        <h1 style="font-size:clamp(28px,4vw,42px); font-weight:900; color:#fff; line-height:1.2;">Todos los Avisos</h1>
+    </div>
+</div>
+
+<div class="container">
+
+    {% if noticias %}
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px;">
+        {% for n in noticias %}
+        <div class="noticia-card" style="background:#fff; border:1px solid #e0ddd6; border-radius:3px; overflow:hidden; cursor:pointer;"
+            data-titulo="{{ n.titulo | e }}"
+            data-contenido="{{ n.contenido | e }}"
+            data-fecha="{{ n.fecha.strftime('%d %b, %Y') }}"
+            data-imagen="{% if n.imagen %}{{ url_for('static', filename='uploads/' ~ n.imagen) }}{% endif %}">
+            {% if n.imagen %}
+            <img src="{{ url_for('static', filename='uploads/' ~ n.imagen) }}" alt="{{ n.titulo }}" style="width:100%; height:180px; object-fit:cover; display:block; pointer-events:none;">
+            {% endif %}
+            <div style="border-top:3px solid {% if loop.index % 2 == 1 %}#c8a84b{% else %}#2a7d4f{% endif %}; padding:20px; pointer-events:none;">
+                <p style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#3a5a76; margin-bottom:8px;">{{ n.fecha.strftime('%d %b, %Y') }}</p>
+                <h3 style="font-size:17px; font-weight:700; color:#0f2540; line-height:1.4; margin-bottom:10px;">{{ n.titulo }}</h3>
+                <p class="clamp-3" style="font-size:15px; font-weight:400; color:#2d4a5e; line-height:1.8;">{{ n.contenido }}</p>
+                <p style="margin-top:14px; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#0f2540; display:flex; align-items:center; gap:6px;">
+                    Leer más <i class="fas fa-arrow-right" style="font-size:9px;"></i>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="background:#fff; border:1px solid #e0ddd6; padding:56px; text-align:center; border-radius:2px;">
+        <i class="fas fa-newspaper" style="font-size:36px; color:#d0ccc2; display:block; margin-bottom:14px;"></i>
+        <p style="font-size:17px; font-weight:600; color:#0f2540; margin-bottom:8px;">Aún no hay avisos publicados</p>
+        <p style="font-size:15px; font-weight:400; color:#2d4a5e;">Pronto la junta directiva publicará información de interés.</p>
+    </div>
+    {% endif %}
+
+    <!-- Volver al inicio -->
+    <div style="margin-top:40px; text-align:center;">
+        <a href="/" style="display:inline-flex; align-items:center; gap:8px; color:#0f2540; font-size:14px; font-weight:700; text-decoration:none; letter-spacing:0.04em; text-transform:uppercase; border:2px solid #0f2540; padding:13px 32px; border-radius:2px;">
+            <i class="fas fa-arrow-left" style="font-size:12px;"></i> Volver al inicio
+        </a>
+    </div>
+</div>
+
+<!-- MODAL NOTICIA -->
+<div id="modal-noticia" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.6); padding:16px; align-items:center; justify-content:center;">
+    <div style="background:#fff; width:100%; max-width:500px; border-radius:3px; overflow:hidden; max-height:90vh; display:flex; flex-direction:column;">
+        <div id="modal-img-wrap" style="display:none;">
+            <img id="modal-img" src="" alt="" style="width:100%; height:220px; object-fit:cover; display:block;">
+        </div>
+        <div style="background:#0f2540; padding:22px 24px; display:flex; justify-content:space-between; align-items:start; gap:12px; flex-shrink:0;">
+            <div>
+                <p id="modal-fecha" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c8a84b; margin-bottom:6px;"></p>
+                <h3 id="modal-titulo" style="font-size:18px; font-weight:700; color:#fff; line-height:1.35;"></h3>
+            </div>
+            <button onclick="cerrarModal()" style="background:none; border:none; color:rgba(255,255,255,0.5); font-size:28px; cursor:pointer; line-height:1; padding:0; flex-shrink:0;">&times;</button>
+        </div>
+        <div style="padding:22px 24px; overflow-y:auto; flex-grow:1;">
+            <p id="modal-contenido" style="font-size:16px; font-weight:400; color:#333; line-height:1.85; white-space:pre-line;"></p>
+        </div>
+        <div style="padding:0 24px 22px; flex-shrink:0;">
+            <button onclick="cerrarModal()" style="width:100%; padding:13px; border:1px solid #e0ddd6; background:none; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; color:#5a7a96;">
+                CERRAR
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById('modal-noticia');
+    document.querySelectorAll('.noticia-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+            document.getElementById('modal-titulo').textContent    = this.getAttribute('data-titulo');
+            document.getElementById('modal-contenido').textContent = this.getAttribute('data-contenido');
+            document.getElementById('modal-fecha').textContent     = this.getAttribute('data-fecha');
+            var imagen  = this.getAttribute('data-imagen');
+            var imgWrap = document.getElementById('modal-img-wrap');
+            var imgEl   = document.getElementById('modal-img');
+            if (imagen) { imgEl.src = imagen; imgWrap.style.display = 'block'; }
+            else { imgWrap.style.display = 'none'; }
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    function cerrarModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    modal.addEventListener('click', function(e) { if (e.target === modal) cerrarModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') cerrarModal(); });
+</script>
+{% endblock %}

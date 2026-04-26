@@ -27,7 +27,7 @@
 
     {% if noticias %}
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
-        {% for n in noticias %}
+        {% for n in noticias[:4] %}
         <div class="noticia-card" style="background: #fff; border: 1px solid #e0ddd6; border-radius: 3px; overflow: hidden; cursor: pointer;"
             data-titulo="{{ n.titulo | e }}"
             data-contenido="{{ n.contenido | e }}"
@@ -53,6 +53,21 @@
         <p style="color: #5a7a96; font-size: 14px; font-weight: 300;">Aún no hay avisos publicados.</p>
     </div>
     {% endif %}
+
+    {% if noticias|length > 4 %}
+    <div style="text-align:center; margin-top:8px;">
+        <a href="/noticias" style="display:inline-block; border:2px solid #0f2540; color:#0f2540; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:13px 32px; border-radius:2px; text-decoration:none; transition:background 0.2s;">
+            Ver todos los avisos <i class="fas fa-arrow-right" style="margin-left:8px; font-size:11px;"></i>
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- VER TODOS -->
+    <div style="text-align:center; margin-top:8px; margin-bottom:16px;">
+        <a href="/noticias" style="display:inline-flex; align-items:center; gap:8px; border:2px solid #0f2540; color:#0f2540; font-size:14px; font-weight:700; padding:13px 32px; border-radius:2px; text-decoration:none; letter-spacing:0.04em; text-transform:uppercase; transition:background 0.2s;">
+            Ver todos los avisos <i class="fas fa-arrow-right" style="font-size:12px;"></i>
+        </a>
+    </div>
 
     <!-- CTA contacto -->
     <div style="margin-top: 48px; background: #0f2540; padding: 36px 32px; border-radius: 3px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
