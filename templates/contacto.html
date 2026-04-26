@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div style="background:#0f2540; padding:48px 24px 40px;">
+<div style="background:#1a6fa8; padding:48px 24px 40px;">
     <div style="max-width:1100px; margin:0 auto;">
-        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c8a84b; margin-bottom:10px;">Comuníquese con nosotros</p>
+        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#50C878; margin-bottom:10px;">Comuníquese con nosotros</p>
         <h1 style="font-size:clamp(28px,4vw,42px); font-weight:900; color:#fff; line-height:1.2;">Contacto</h1>
     </div>
 </div>
@@ -12,33 +12,33 @@
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px; align-items:start;">
 
         <!-- Formulario -->
-        <div style="background:#fff; border:1px solid #e0ddd6; padding:32px; border-radius:2px; border-top:4px solid #2a7d4f;">
-            <h2 style="font-size:16px; font-weight:700; color:#0f2540; margin-bottom:24px; text-transform:uppercase; letter-spacing:0.05em;">
-                <i class="fas fa-envelope" style="color:#2a7d4f; margin-right:8px;"></i> Envíe su mensaje
+        <div style="background:#fff; border:1px solid #ddddee; padding:32px; border-radius:2px; border-top:4px solid #4A90E2;">
+            <h2 style="font-size:16px; font-weight:700; color:#1a6fa8; margin-bottom:24px; text-transform:uppercase; letter-spacing:0.05em;">
+                <i class="fas fa-envelope" style="color:#4A90E2; margin-right:8px;"></i> Envíe su mensaje
             </h2>
             <form action="https://formsubmit.co/ivancarrascocano@gmail.com" method="POST" style="display:flex; flex-direction:column; gap:16px;">
                 <div>
-                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#5a7a96; margin-bottom:6px;">Nombre completo</label>
+                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#555577; margin-bottom:6px;">Nombre completo</label>
                     <input type="text" name="nombre" placeholder="Ej: Carlos Pérez" required
-                        style="width:100%; padding:12px 14px; border:1px solid #e0ddd6; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:400; outline:none; color:#1a1a2e; background:#fafaf8;">
+                        style="width:100%; padding:12px 14px; border:1px solid #ddddee; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:400; outline:none; color:#333333; background:#F5F5F5;">
                 </div>
                 <div>
-                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#5a7a96; margin-bottom:6px;">Correo electrónico</label>
+                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#555577; margin-bottom:6px;">Correo electrónico</label>
                     <input type="email" name="correo" placeholder="correo@ejemplo.com" required
-                        style="width:100%; padding:12px 14px; border:1px solid #e0ddd6; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none; color:#1a1a2e; background:#fafaf8;">
+                        style="width:100%; padding:12px 14px; border:1px solid #ddddee; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none; color:#333333; background:#F5F5F5;">
                 </div>
                 <div>
-                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#5a7a96; margin-bottom:6px;">Asunto</label>
-                    <select name="asunto" style="width:100%; padding:12px 14px; border:1px solid #e0ddd6; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none; color:#1a1a2e; background:#fafaf8;">
+                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#555577; margin-bottom:6px;">Asunto</label>
+                    <select name="asunto" style="width:100%; padding:12px 14px; border:1px solid #ddddee; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none; color:#333333; background:#F5F5F5;">
                         <option>Reportar Falla Técnica</option>
                         <option>Duda sobre Factura</option>
                         <option>Otro trámite</option>
                     </select>
                 </div>
                 <div>
-                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#5a7a96; margin-bottom:6px;">Mensaje</label>
+                    <label style="display:block; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#555577; margin-bottom:6px;">Mensaje</label>
                     <textarea name="mensaje" rows="5" placeholder="¿En qué podemos ayudarle?" required
-                        style="width:100%; padding:12px 14px; border:1px solid #e0ddd6; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; outline:none; resize:vertical; color:#1a1a2e; background:#fafaf8;"></textarea>
+                        style="width:100%; padding:12px 14px; border:1px solid #ddddee; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; outline:none; resize:vertical; color:#333333; background:#F5F5F5;"></textarea>
                 </div>
                 <button type="submit" class="btn-secondary" style="width:100%; padding:14px; border:none; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">
                     <i class="fas fa-paper-plane" style="margin-right:8px;"></i> Enviar mensaje
@@ -48,24 +48,24 @@
 
         <!-- Info -->
         <div style="display:flex; flex-direction:column; gap:16px;">
-            <div style="background:#fff; border:1px solid #e0ddd6; padding:24px; border-radius:2px;">
-                <h3 style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0f2540; margin-bottom:16px;">Información de atención</h3>
+            <div style="background:#fff; border:1px solid #ddddee; padding:24px; border-radius:2px;">
+                <h3 style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#1a6fa8; margin-bottom:16px;">Información de atención</h3>
                 <div style="display:flex; flex-direction:column; gap:14px;">
                     <div style="display:flex; align-items:start; gap:12px;">
-                        <div style="background:#d4edda; width:34px; height:34px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                            <i class="fas fa-map-marker-alt" style="color:#2a7d4f; font-size:13px;"></i>
+                        <div style="background:#ddeeff; width:34px; height:34px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-map-marker-alt" style="color:#4A90E2; font-size:13px;"></i>
                         </div>
                         <div>
-                            <p style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#5a7a96; margin-bottom:2px;">Ubicación</p>
+                            <p style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#555577; margin-bottom:2px;">Ubicación</p>
                             <p style="font-size:13px; font-weight:400; color:#333; line-height:1.6;">Vereda Quebrada Grande, San Antonio del Tequendama</p>
                         </div>
                     </div>
                     <div style="display:flex; align-items:start; gap:12px;">
-                        <div style="background:#d4edda; width:34px; height:34px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                            <i class="fas fa-clock" style="color:#2a7d4f; font-size:13px;"></i>
+                        <div style="background:#ddeeff; width:34px; height:34px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fas fa-clock" style="color:#4A90E2; font-size:13px;"></i>
                         </div>
                         <div>
-                            <p style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#5a7a96; margin-bottom:2px;">Horario</p>
+                            <p style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#555577; margin-bottom:2px;">Horario</p>
                             <p style="font-size:13px; font-weight:400; color:#333;">Lunes a viernes</p>
                             <p style="font-size:13px; font-weight:400; color:#333;">8:00 a.m. – 12:00 m.</p>
                         </div>

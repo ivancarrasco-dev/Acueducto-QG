@@ -1,8 +1,18 @@
 import os
+import locale
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.utils import secure_filename
+
+# Intentar configurar locale en español
+try:
+    locale.setlocale(locale.LC_TIME, 'es_CO.UTF-8')
+except:
+    try:
+        locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+    except:
+        pass
 
 app = Flask(__name__)
 app.secret_key = "acueducto_vereda_2026_seguro"
@@ -18,6 +28,25 @@ PDF_FOLDER = 'static/documentos'
 app.config['PDF_FOLDER'] = PDF_FOLDER
 
 db = SQLAlchemy(app)
+
+MESES = {
+    1:'enero', 2:'febrero', 3:'marzo', 4:'abril',
+    5:'mayo', 6:'junio', 7:'julio', 8:'agosto',
+    9:'septiembre', 10:'octubre', 11:'noviembre', 12:'diciembre'
+}
+MESES_CORTO = {
+    1:'Ene', 2:'Feb', 3:'Mar', 4:'Abr',
+    5:'May', 6:'Jun', 7:'Jul', 8:'Ago',
+    9:'Sep', 10:'Oct', 11:'Nov', 12:'Dic'
+}
+
+@app.template_filter('fecha_es')
+def fecha_es(dt):
+    return f"{dt.day:02d}/{dt.month:02d}/{dt.year}"
+
+@app.template_filter('fecha_larga_es')
+def fecha_larga_es(dt):
+    return f"{dt.day} {MESES_CORTO[dt.month]}, {dt.year}"
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PDF_FOLDER, exist_ok=True)

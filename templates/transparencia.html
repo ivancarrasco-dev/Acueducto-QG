@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div style="background:#0f2540; padding:48px 24px 40px;">
+<div style="background:#1a6fa8; padding:48px 24px 40px;">
     <div style="max-width:1100px; margin:0 auto;">
-        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#c8a84b; margin-bottom:10px;">Rendición de cuentas</p>
+        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#50C878; margin-bottom:10px;">Rendición de cuentas</p>
         <h1 style="font-size:clamp(28px,4vw,42px); font-weight:900; color:#fff; line-height:1.2;">Transparencia</h1>
     </div>
 </div>
@@ -13,24 +13,37 @@
         Aquí encontrará los documentos oficiales de la asociación: actas de asamblea, informes financieros, tarifas vigentes y más.
     </p>
 
+    <!-- BARRA DE BÚSQUEDA -->
+    <div style="margin-bottom:32px;">
+        <div style="position:relative; max-width:500px;">
+            <i class="fas fa-search" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#88aacc; font-size:15px;"></i>
+            <input type="text" id="buscador" placeholder="Buscar documento..."
+                oninput="filtrarDocs()"
+                style="width:100%; padding:14px 14px 14px 44px; border:2px solid #ddddee; border-radius:3px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none; color:#333333; background:#fff; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#4A90E2'"
+                onblur="this.style.borderColor='#ddddee'">
+        </div>
+        <p id="sin-resultados" style="display:none; margin-top:12px; font-size:14px; color:#888; font-style:italic;">No se encontraron documentos con ese nombre.</p>
+    </div>
+
     {% if documentos %}
         {% set categorias = documentos | map(attribute='categoria') | unique | list %}
         {% for cat in categorias %}
-        <div style="margin-bottom:32px;">
+        <div class="cat-block" style="margin-bottom:32px;">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
-                <div style="width:4px; height:22px; background:#2a7d4f; border-radius:2px;"></div>
-                <h2 style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0f2540;">{{ cat }}</h2>
+                <div style="width:4px; height:22px; background:#4A90E2; border-radius:2px;"></div>
+                <h2 style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#1a6fa8;">{{ cat }}</h2>
             </div>
-            <div style="background:#fff; border:1px solid #e0ddd6; border-radius:2px; overflow:hidden;">
+            <div style="background:#fff; border:1px solid #ddddee; border-radius:2px; overflow:hidden;">
                 {% for doc in documentos if doc.categoria == cat %}
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #f0ece4; gap:16px; {% if loop.last %}border-bottom:none;{% endif %}">
+                <div class="doc-row" style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #eeeef5; gap:16px; {% if loop.last %}border-bottom:none;{% endif %}">
                     <div style="display:flex; align-items:center; gap:14px; min-width:0;">
                         <div style="background:#fdf0f0; width:36px; height:36px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                             <i class="fas fa-file-pdf" style="color:#8b1a1a; font-size:14px;"></i>
                         </div>
                         <div style="min-width:0;">
-                            <p style="font-size:14px; font-weight:600; color:#0f2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ doc.nombre }}</p>
-                            <p style="font-size:11px; font-weight:300; color:#5a7a96; margin-top:2px;">Subido el {{ doc.fecha.strftime('%d/%m/%Y') }}</p>
+                            <p style="font-size:14px; font-weight:600; color:#1a6fa8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ doc.nombre }}</p>
+                            <p style="font-size:11px; font-weight:300; color:#555577; margin-top:2px;">Subido el {{ doc.fecha | fecha_es }}</p>
                         </div>
                     </div>
                     <a href="/documentos/{{ doc.ruta }}" target="_blank" class="btn-secondary" style="white-space:nowrap; font-size:11px; padding:9px 18px;">
@@ -42,16 +55,40 @@
         </div>
         {% endfor %}
     {% else %}
-    <div style="background:#fff; border:1px solid #e0ddd6; padding:56px; text-align:center; border-radius:2px;">
+    <div style="background:#fff; border:1px solid #ddddee; padding:56px; text-align:center; border-radius:2px;">
         <i class="fas fa-folder-open" style="font-size:36px; color:#d0ccc2; display:block; margin-bottom:14px;"></i>
-        <p style="font-size:15px; font-weight:600; color:#0f2540; margin-bottom:6px;">Aún no hay documentos publicados</p>
-        <p style="font-size:15px; font-weight:400; color:#2d4a5e;">La junta directiva publicará los documentos próximamente.</p>
+        <p style="font-size:15px; font-weight:600; color:#1a6fa8; margin-bottom:6px;">Aún no hay documentos publicados</p>
+        <p style="font-size:15px; font-weight:400; color:#444466;">La junta directiva publicará los documentos próximamente.</p>
     </div>
     {% endif %}
 
-    <div style="margin-top:36px; border:1px solid #e0ddd6; padding:22px 26px; border-radius:2px; display:flex; align-items:center; gap:14px; background:#fff;">
-        <i class="fas fa-info-circle" style="color:#2a7d4f; font-size:18px; flex-shrink:0;"></i>
-        <p style="font-size:13px; font-weight:300; color:#444; line-height:1.7;">¿Necesita un documento que no encuentra aquí? <a href="/contacto" style="color:#0f2540; font-weight:700; text-decoration:none;">Contáctenos</a> y con gusto le ayudamos.</p>
+    <div style="margin-top:36px; border:1px solid #ddddee; padding:22px 26px; border-radius:2px; display:flex; align-items:center; gap:14px; background:#fff;">
+        <i class="fas fa-info-circle" style="color:#4A90E2; font-size:18px; flex-shrink:0;"></i>
+        <p style="font-size:13px; font-weight:300; color:#444; line-height:1.7;">¿Necesita un documento que no encuentra aquí? <a href="/contacto" style="color:#1a6fa8; font-weight:700; text-decoration:none;">Contáctenos</a> y con gusto le ayudamos.</p>
     </div>
 </div>
+
+<script>
+    function filtrarDocs() {
+        var q = document.getElementById('buscador').value.toLowerCase().trim();
+        var rows = document.querySelectorAll('.doc-row');
+        var visibles = 0;
+
+        rows.forEach(function(row) {
+            var nombre = row.querySelector('p') ? row.querySelector('p').textContent.toLowerCase() : '';
+            var mostrar = nombre.includes(q);
+            row.style.display = mostrar ? 'flex' : 'none';
+            if (mostrar) visibles++;
+        });
+
+        // Ocultar categorías vacías
+        document.querySelectorAll('.cat-block').forEach(function(block) {
+            var filas = block.querySelectorAll('.doc-row');
+            var algunaVisible = Array.from(filas).some(function(f) { return f.style.display !== 'none'; });
+            block.style.display = algunaVisible ? 'block' : 'none';
+        });
+
+        document.getElementById('sin-resultados').style.display = (visibles === 0 && q !== '') ? 'block' : 'none';
+    }
+</script>
 {% endblock %}
