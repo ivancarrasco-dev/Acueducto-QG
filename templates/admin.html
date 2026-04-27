@@ -134,9 +134,6 @@
     <!-- Encabezado -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:14px; border-bottom:2px solid #1a6fa8;">
         <h1 style="font-size:17px; font-weight:700; color:#1a6fa8; margin:0;">Panel de Administración</h1>
-        <a href="/logout" style="font-size:12px; font-weight:600; color:#8b1a1a; text-decoration:none; border:1px solid #f5c6c6; padding:7px 14px; border-radius:2px; white-space:nowrap;">
-            Cerrar sesión
-        </a>
     </div>
 
     <!-- Tabs -->
@@ -171,6 +168,13 @@
             <div class="tabla-header" style="background:#1a6fa8;">
                 <span>{{ noticias|length }} noticia{% if noticias|length != 1 %}s{% endif %} publicada{% if noticias|length != 1 %}s{% endif %}</span>
             </div>
+
+        <!-- Búsqueda noticias -->
+        <div style="padding:10px 14px; background:#F5F5F5; border-bottom:1px solid #ddddee; display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-search" style="color:#88aacc; font-size:13px;"></i>
+            <input type="text" id="buscar-noticia" placeholder="Buscar noticia..." oninput="filtrarNoticias()"
+                style="border:none; background:transparent; font-family:'Montserrat',sans-serif; font-size:14px; outline:none; width:100%; color:#333333;">
+        </div>
             {% if noticias %}
             <div class="tabla-scroll">
                 <table>
@@ -249,6 +253,13 @@
             <div class="tabla-header" style="background:#4A90E2;">
                 <span>{{ documentos|length }} documento{% if documentos|length != 1 %}s{% endif %} publicado{% if documentos|length != 1 %}s{% endif %}</span>
             </div>
+
+        <!-- Búsqueda documentos -->
+        <div style="padding:10px 14px; background:#F5F5F5; border-bottom:1px solid #ddddee; display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-search" style="color:#88aacc; font-size:13px;"></i>
+            <input type="text" id="buscar-doc" placeholder="Buscar documento..." oninput="filtrarDocs()"
+                style="border:none; background:transparent; font-family:'Montserrat',sans-serif; font-size:14px; outline:none; width:100%; color:#333333;">
+        </div>
             {% if documentos %}
             <div class="tabla-scroll">
                 <table>
@@ -347,5 +358,23 @@
     }
     modal.addEventListener('click', function(e) { if (e.target === modal) cerrarModal(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') cerrarModal(); });
+
+    function filtrarNoticias() {
+        var q = document.getElementById('buscar-noticia').value.toLowerCase();
+        document.querySelectorAll('#tab-noticias tbody tr').forEach(function(row) {
+            var titulo = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
+            row.style.display = titulo.includes(q) ? '' : 'none';
+        });
+    }
+
+    function filtrarDocs() {
+        var q = document.getElementById('buscar-doc').value.toLowerCase();
+        document.querySelectorAll('#tab-documentos tbody tr').forEach(function(row) {
+            var nombre = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
+            var cat    = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+            row.style.display = (nombre.includes(q) || cat.includes(q)) ? '' : 'none';
+        });
+    }
+
 </script>
 {% endblock %}

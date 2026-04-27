@@ -29,6 +29,12 @@ app.config['PDF_FOLDER'] = PDF_FOLDER
 
 db = SQLAlchemy(app)
 
+@app.after_request
+def set_headers(response):
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['Content-Security-Policy'] = "frame-src 'self' https://www.google.com https://maps.google.com https://www.google.com/maps/"
+    return response
+
 MESES = {
     1:'enero', 2:'febrero', 3:'marzo', 4:'abril',
     5:'mayo', 6:'junio', 7:'julio', 8:'agosto',
