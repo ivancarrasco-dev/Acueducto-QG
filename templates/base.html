@@ -389,7 +389,7 @@
                 <a href="/admin">Panel</a>
                 <a href="/logout" class="nav-btn-danger">Cerrar Sesión</a>
             {% else %}
-                <a href="/login" class="nav-btn">Acceso Junta</a>
+                <a href="/login" class="nav-btn"><i class="fas fa-lock" style="margin-right:6px;"></i> Acceso Junta</a>
             {% endif %}
         </div>
         <button class="hamburger" id="menu-btn" aria-label="Menú">
@@ -406,17 +406,20 @@
             <a href="/admin"><i class="fas fa-cog"></i> Panel Admin</a>
             <a href="/logout" class="mobile-btn-logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
         {% else %}
-            <a href="/login" class="mobile-btn-admin"><i class="fas fa-lock"></i> Acceso Junta</a>
+            <a href="/login" class="mobile-btn-admin"><i class="fas fa-lock" style="margin-right:8px;"></i> Acceso Junta</a>
         {% endif %}
     </div>
 </nav>
 
 <main>
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div style="max-width:1100px;margin:0 auto;padding:20px 20px 0;">
-          {% for message in messages %}
-            <div class="flash">{{ message }}</div>
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash {% if category == 'error' %}flash-error{% endif %}" id="flash-{{ loop.index }}">
+                <span class="flash-icon">{% if category == 'error' %}❌{% else %}✅{% endif %}</span>{{ message }}
+                <button class="flash-close" onclick="dismissFlash('flash-{{ loop.index }}')">&times;</button>
+            </div>
           {% endfor %}
         </div>
       {% endif %}

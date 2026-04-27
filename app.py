@@ -100,7 +100,7 @@ def login():
             flash("Inicio de sesión exitoso. Bienvenido al panel.")
             return redirect(url_for('admin_noticias'))
         else:
-            flash("Usuario o contraseña incorrectos. Intente de nuevo.")
+            flash("Usuario o contraseña incorrectos. Intente de nuevo.", "error")
     return render_template('login.html')
 
 @app.route('/logout')
@@ -162,7 +162,7 @@ def ver_documento(filename):
 @app.route('/admin')
 def admin_noticias():
     if 'admin' not in session:
-        flash("Por favor, inicie sesión para acceder a esta área.")
+        flash("Por favor, inicie sesión para acceder a esta área.", "error")
         return redirect(url_for('login'))
     noticias = Noticia.query.order_by(Noticia.id.desc()).all()
     documentos = Documento.query.order_by(Documento.fecha.desc()).all()
@@ -220,7 +220,7 @@ def subir_documento():
     categoria = request.form['categoria']
     archivo = request.files.get('archivo')
     if not archivo or not allowed_pdf(archivo.filename):
-        flash("Error: solo se permiten archivos PDF.")
+        flash("Error: solo se permiten archivos PDF.", "error")
         return redirect(url_for('admin_noticias'))
     filename = secure_filename(archivo.filename)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_')
