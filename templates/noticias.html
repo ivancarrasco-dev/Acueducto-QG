@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div style="background:#1a6fa8; padding:48px 24px 40px;">
+<div style="background:#2d4a6e; padding:48px 24px 40px;">
     <div style="max-width:1100px; margin:0 auto;">
         <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#50C878; margin-bottom:10px;">Historial completo</p>
         <h1 style="font-size:clamp(28px,4vw,42px); font-weight:900; color:#fff; line-height:1.2;">Todos los Avisos</h1>
@@ -23,9 +23,9 @@
             {% endif %}
             <div style="border-top:3px solid {% if loop.index % 2 == 1 %}#50C878{% else %}#4A90E2{% endif %}; padding:20px; pointer-events:none;">
                 <p style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#444466; margin-bottom:8px;">{{ n.fecha | fecha_larga_es }}</p>
-                <h3 style="font-size:17px; font-weight:700; color:#1a6fa8; line-height:1.4; margin-bottom:10px;">{{ n.titulo }}</h3>
+                <h3 style="font-size:17px; font-weight:700; color:#2d4a6e; line-height:1.4; margin-bottom:10px;">{{ n.titulo }}</h3>
                 <p class="clamp-3" style="font-size:15px; font-weight:400; color:#444466; line-height:1.8;">{{ n.contenido }}</p>
-                <p style="margin-top:14px; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#1a6fa8; display:flex; align-items:center; gap:6px;">
+                <p style="margin-top:14px; font-size:13px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#2d4a6e; display:flex; align-items:center; gap:6px;">
                     Leer más <i class="fas fa-arrow-right" style="font-size:9px;"></i>
                 </p>
             </div>
@@ -36,14 +36,14 @@
     {% else %}
     <div style="background:#fff; border:1px solid #ddddee; padding:56px; text-align:center; border-radius:2px;">
         <i class="fas fa-newspaper" style="font-size:36px; color:#d0ccc2; display:block; margin-bottom:14px;"></i>
-        <p style="font-size:17px; font-weight:600; color:#1a6fa8; margin-bottom:8px;">Aún no hay avisos publicados</p>
+        <p style="font-size:17px; font-weight:600; color:#2d4a6e; margin-bottom:8px;">Aún no hay avisos publicados</p>
         <p style="font-size:15px; font-weight:400; color:#444466;">Pronto la junta directiva publicará información de interés.</p>
     </div>
     {% endif %}
 
     <!-- Volver al inicio -->
     <div style="margin-top:40px; text-align:center;">
-        <a href="/" style="display:inline-flex; align-items:center; gap:8px; color:#1a6fa8; font-size:14px; font-weight:700; text-decoration:none; letter-spacing:0.04em; text-transform:uppercase; border:2px solid #1a6fa8; padding:13px 32px; border-radius:2px;">
+        <a href="/" style="display:inline-flex; align-items:center; gap:8px; color:#2d4a6e; font-size:14px; font-weight:700; text-decoration:none; letter-spacing:0.04em; text-transform:uppercase; border:2px solid #1a6fa8; padding:13px 32px; border-radius:2px;">
             <i class="fas fa-arrow-left" style="font-size:12px;"></i> Volver al inicio
         </a>
     </div>
@@ -55,7 +55,7 @@
         <div id="modal-img-wrap" style="display:none;">
             <img id="modal-img" src="" alt="" style="width:100%; height:220px; object-fit:cover; display:block;">
         </div>
-        <div style="background:#1a6fa8; padding:22px 24px; display:flex; justify-content:space-between; align-items:start; gap:12px; flex-shrink:0;">
+        <div style="background:#2d4a6e; padding:22px 24px; display:flex; justify-content:space-between; align-items:start; gap:12px; flex-shrink:0;">
             <div>
                 <p id="modal-fecha" style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#50C878; margin-bottom:6px;"></p>
                 <h3 id="modal-titulo" style="font-size:18px; font-weight:700; color:#fff; line-height:1.35;"></h3>

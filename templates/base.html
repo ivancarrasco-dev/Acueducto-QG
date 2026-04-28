@@ -32,7 +32,8 @@
 
         /* ── NAVBAR ── */
         nav {
-            background: #0d3d6b;
+            background: #ffffff;
+            border-bottom: 3px solid #2d4a6e;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -80,15 +81,27 @@
             .nav-links { display: flex; }
         }
         .nav-links a {
-            color: rgba(255,255,255,0.85);
+            color: #2d4a6e;
             text-decoration: none;
             font-size: 13px;
             font-weight: 600;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            transition: color 0.2s;
+            position: relative;
+            padding-bottom: 4px;
         }
-        .nav-links a:hover { color: #fff; }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #2d4a6e;
+            transition: width 0.25s ease;
+        }
+        .nav-links a:hover { color: #2d4a6e; }
+        .nav-links a:hover::after { width: 100%; }
         .nav-btn {
             background: #50C878;
             color: #fff !important;
@@ -116,19 +129,22 @@
             border: none;
             cursor: pointer;
             padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
         }
+        .hamburger:hover { background: #eef2f8; }
         @media (min-width: 820px) { .hamburger { display: none; } }
         .hamburger span {
             display: block;
             height: 2px;
-            background: #fff;
+            background: #2d4a6e;
             border-radius: 2px;
             transition: all 0.28s;
         }
 
         /* Menú móvil */
         .mobile-menu {
-            background: #0a3060;
+            background: #f0f4f8;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.32s ease;
@@ -138,20 +154,20 @@
             align-items: center;
             gap: 12px;
             padding: 18px 24px;
-            color: rgba(255,255,255,0.9);
+            color: #2d4a6e;
             text-decoration: none;
             font-size: 15px;
             font-weight: 600;
             letter-spacing: 0.03em;
             text-transform: uppercase;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid #dde4ee;
             transition: background 0.2s;
         }
-        .mobile-menu a:hover { background: rgba(255,255,255,0.06); }
-        .mobile-menu a i { width: 18px; text-align: center; color: var(--dorado); font-size: 13px; }
+        .mobile-menu a:hover { background: #dde6f0; color: #1a3a5c; }
+        .mobile-menu a i { width: 18px; text-align: center; color: #1a6fa8; font-size: 13px; }
         .mobile-btn-admin {
-            background: var(--dorado);
-            color: var(--marino) !important;
+            background: #2d4a6e;
+            color: #ffffff !important;
             margin: 12px 24px;
             border-radius: 2px;
             justify-content: center !important;
@@ -377,7 +393,7 @@
 <nav>
     <div class="nav-inner">
         <a href="/" class="nav-logo">
-                <img src="{{ url_for('static', filename='media/logo_horizontal_sin_fondo.png') }}" alt="Acueducto Quebrada Grande" style="height:44px; width:auto; display:block; filter:brightness(0) invert(1);">
+                <img src="{{ url_for('static', filename='media/logo_horizontal_sin_fondo.png') }}" alt="Acueducto Quebrada Grande" style="height:44px; width:auto; display:block;">
             </a>
         <div class="nav-links">
             <a href="/">Inicio</a>

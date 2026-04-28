@@ -19,7 +19,7 @@
         text-transform: uppercase;
         transition: background 0.2s;
     }
-    .tab-btn.active { background: #1a6fa8; color: #fff; }
+    .tab-btn.active { background: #2d4a6e; color: #fff; }
 
     /* Form grid — 1 col mobile, 2 col desktop */
     .form-grid {
@@ -66,8 +66,8 @@
     .btn-publish {
         width: 100%;
         padding: 14px;
-        background: #4A90E2;
-        color: #fff;
+        background: #2d4a6e;
+        color: #ffffff;
         border: none;
         border-radius: 2px;
         font-family: 'Montserrat', sans-serif;
@@ -82,8 +82,8 @@
     .btn-pdf {
         width: 100%;
         padding: 14px;
-        background: #50C878;
-        color: #1a6fa8;
+        background: #2d4a6e;
+        color: #ffffff;
         border: none;
         border-radius: 2px;
         font-family: 'Montserrat', sans-serif;
@@ -132,8 +132,8 @@
 <div class="admin-wrap">
 
     <!-- Encabezado -->
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:14px; border-bottom:2px solid #1a6fa8;">
-        <h1 style="font-size:17px; font-weight:700; color:#1a6fa8; margin:0;">Panel de Administración</h1>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:14px; border-bottom:2px solid #2d4a6e;">
+        <h1 style="font-size:17px; font-weight:700; color:#2d4a6e; margin:0;">Panel de Administración</h1>
     </div>
 
     <!-- Tabs -->
@@ -165,7 +165,7 @@
         </form>
 
         <div class="tabla-wrap">
-            <div class="tabla-header" style="background:#1a6fa8;">
+            <div class="tabla-header" style="background:#2d4a6e;">
                 <span>{{ noticias|length }} noticia{% if noticias|length != 1 %}s{% endif %} publicada{% if noticias|length != 1 %}s{% endif %}</span>
             </div>
 
@@ -190,7 +190,7 @@
                         {% for n in noticias %}
                         <tr>
                             <td style="white-space:nowrap; font-size:13px; color:#666;">{{ n.fecha | fecha_es }}</td>
-                            <td style="font-weight:600; color:#1a6fa8;">{{ n.titulo }}</td>
+                            <td style="font-weight:600; color:#2d4a6e;">{{ n.titulo }}</td>
                             <td style="text-align:center;">
                                 {% if n.imagen %}
                                     <img src="{{ url_for('static', filename='uploads/' ~ n.imagen) }}" style="height:30px; width:48px; object-fit:cover; border-radius:2px; vertical-align:middle;">
@@ -250,7 +250,7 @@
         </form>
 
         <div class="tabla-wrap">
-            <div class="tabla-header" style="background:#4A90E2;">
+            <div class="tabla-header" style="background:#2d4a6e;">
                 <span>{{ documentos|length }} documento{% if documentos|length != 1 %}s{% endif %} publicado{% if documentos|length != 1 %}s{% endif %}</span>
             </div>
 
@@ -275,7 +275,7 @@
                         {% for doc in documentos %}
                         <tr>
                             <td style="white-space:nowrap; font-size:13px; color:#666;">{{ doc.fecha | fecha_es }}</td>
-                            <td style="font-weight:600; color:#1a6fa8;">{{ doc.nombre }}</td>
+                            <td style="font-weight:600; color:#2d4a6e;">{{ doc.nombre }}</td>
                             <td><span class="badge">{{ doc.categoria }}</span></td>
                             <td style="text-align:center;">
                                 <div class="acciones">
@@ -301,7 +301,7 @@
 <div id="modal-editar" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.5); padding:16px; align-items:center; justify-content:center;">
     <div style="background:#fff; width:100%; max-width:480px; border-radius:2px; overflow:hidden; border-top:4px solid #50C878; max-height:90vh; display:flex; flex-direction:column;">
         <div style="background:#F5F5F5; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ddd; flex-shrink:0;">
-            <span style="font-size:14px; font-weight:700; color:#1a6fa8;">Editar noticia</span>
+            <span style="font-size:14px; font-weight:700; color:#2d4a6e;">Editar noticia</span>
             <button onclick="cerrarModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#999; line-height:1; padding:0;">&times;</button>
         </div>
         <form id="form-editar" method="POST" enctype="multipart/form-data" style="padding:18px; display:flex; flex-direction:column; gap:12px; overflow-y:auto;">
@@ -321,7 +321,7 @@
             </div>
             <div style="display:flex; gap:8px;">
                 <button type="submit"
-                    style="flex:1; padding:13px; background:#4A90E2; color:#fff; border:none; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:700; cursor:pointer;">
+                    style="flex:1; padding:13px; background:#ffffff; color:#fff; border:none; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:14px; font-weight:700; cursor:pointer;">
                     Guardar cambios
                 </button>
                 <button type="button" onclick="cerrarModal()"
