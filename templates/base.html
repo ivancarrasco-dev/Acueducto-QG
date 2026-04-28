@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acueducto Quebrada Grande</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='media/icono.ico') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -376,9 +377,8 @@
 <nav>
     <div class="nav-inner">
         <a href="/" class="nav-logo">
-            <i class="fas fa-tint nav-logo-icon"></i>
-            <span class="nav-logo-text">Acueducto <span>Quebrada Grande</span></span>
-        </a>
+                <img src="{{ url_for('static', filename='media/logo_horizontal_sin_fondo.png') }}" alt="Acueducto Quebrada Grande" style="height:44px; width:auto; display:block; filter:brightness(0) invert(1);">
+            </a>
         <div class="nav-links">
             <a href="/">Inicio</a>
             <a href="/nosotros">Quiénes Somos</a>
@@ -432,8 +432,7 @@
     <div class="footer-inner">
         <div>
             <div class="footer-brand">
-                <i class="fas fa-tint"></i>
-                <span>Acueducto Quebrada Grande</span>
+                <img src="{{ url_for('static', filename='media/isotipo_sin_fondo.png') }}" alt="Acueducto Quebrada Grande" style="height:52px; width:auto; filter:brightness(0) invert(1);">
             </div>
             <p class="footer-desc">Asociación comunitaria sin ánimo de lucro comprometida con el acceso al agua potable para todos los suscriptores de la vereda.</p>
             <div class="footer-social">
