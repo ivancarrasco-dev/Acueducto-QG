@@ -1,42 +1,77 @@
-# Sistema de Gestión e Información - Acueducto Rural 💧
+# 💧 Sistema Web - Asociación de Acueducto Rural Quebrada Grande
 
-Sistema web integral desarrollado para la **Asociación de Acueducto Rural Quebrada Grande** (San Antonio del Tequendama). Facilita la transparencia administrativa y mejora la comunicación con la comunidad mediante una plataforma moderna, rápida y adaptable a dispositivos móviles.
+Portal web oficial de la **Asociación de Usuarios del Acueducto Vereda Quebrada Grande**, San Antonio del Tequendama, Cundinamarca. Desarrollado para facilitar la comunicación con la comunidad, garantizar la transparencia administrativa y modernizar la gestión del servicio de agua potable.
+
+---
+
+## 🌐 Vista General
+
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat&logo=python)
+![Flask](https://img.shields.io/badge/Flask-2.x-lightgrey?style=flat&logo=flask)
+![SQLite](https://img.shields.io/badge/SQLite-3-blue?style=flat&logo=sqlite)
+![Responsive](https://img.shields.io/badge/Responsive-Mobile--First-green?style=flat)
+
+---
+
+## ✅ Cumplimiento de Requerimientos del Cliente
+
+| Requerimiento | Estado |
+|---|---|
+| Sitio informativo para la comunidad | ✅ |
+| Inicio con presentación general | ✅ |
+| Quiénes Somos — misión, visión, historia | ✅ |
+| Sección de Servicios | ✅ |
+| Noticias y avisos a la comunidad | ✅ |
+| Información de contacto con formulario | ✅ |
+| Transparencia con documentos PDF | ✅ |
+| Diseño responsive para celulares | ✅ |
+| Formulario con notificación al correo | ✅ |
+| Publicación y actualización de noticias | ✅ |
+| Subida de documentos PDF | ✅ |
+| Integración con redes sociales | ⏳ Pendiente (links del cliente) |
+| Panel de administración | ✅ |
 
 ---
 
 ## 🚀 Características Principales
 
 ### Portal Público
-- **Inicio:** Presentación general con noticias y avisos a la comunidad en formato de tarjetas. Al hacer clic en una noticia se abre un modal con el contenido completo.
-- **Quiénes Somos:** Misión, visión y valores de la asociación.
-- **Servicios:** Descripción detallada de los 6 servicios prestados: suministro de agua, mantenimiento de redes, control de calidad, facturación, atención de emergencias y nuevas conexiones.
-- **Transparencia:** Listado público de documentos oficiales (Actas, Tarifas, Informes Financieros, Calidad del Agua, Contratos) organizados por categoría, disponibles para descarga en PDF.
-- **Contacto:** Formulario con envío automático al correo de la administración mediante FormSubmit.
+- **Inicio** — Hero con imagen del municipio, últimas 4 noticias con modal de lectura y botón "Ver todos los avisos"
+- **Quiénes Somos** — Descripción, misión, visión y 7 valores institucionales con información oficial de la asociación
+- **Servicios** — 6 servicios detallados: suministro, mantenimiento, control de calidad, facturación, emergencias y nuevas conexiones
+- **Transparencia** — Documentos PDF organizados por categoría con buscador en tiempo real
+- **Noticias** — Historial completo de avisos con modal de lectura
+- **Contacto** — Formulario con envío al correo via FormSubmit + mapa de Google Maps de la vereda
 
 ### Panel de Administración
-- Acceso protegido con usuario y contraseña.
-- **Gestión de noticias:** Crear, editar y eliminar avisos con imagen opcional.
-- **Gestión de documentos PDF:** Subir y eliminar documentos clasificados por categoría. Solo accesible desde el panel.
-- **Bandeja de mensajes:** Visualización de todos los mensajes enviados por la comunidad desde el formulario de contacto.
+- Acceso protegido con usuario y contraseña
+- **Noticias** — Crear, editar y eliminar avisos con imagen opcional + buscador
+- **Documentos PDF** — Subir y eliminar documentos por categoría + buscador
+- Organizado en tabs para mayor eficiencia
+- Optimizado para uso en celular
 
-### Diseño y Usabilidad
-- **100% Responsive:** Adaptado para celulares, tablets y pantallas grandes.
-- **Menú hamburguesa** en móvil con animación y cierre automático al navegar.
-- **Grid de noticias adaptable:** 1 columna en celular, 2 en tablet, 3 en pantallas grandes.
-- **Footer completo** con navegación, información de contacto y enlaces a redes sociales.
+### Diseño y UX
+- **Fuente Montserrat** — moderna y legible
+- **Paleta institucional** — Azul cian `#4A90E2`, Verde bosque `#50C878`, Blanco humo `#F5F5F5`, Gris carbón `#333333`
+- **Accesible para adultos mayores** — texto grande, alto contraste, botones amplios
+- **Menú hamburguesa** en móvil con animación
+- **Notificaciones popup** — verdes para éxito, rojas para error, desaparecen en 10 segundos
+- **Fechas en español** — filtros Jinja personalizados
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Tecnologías
 
 | Capa | Tecnología |
 |---|---|
 | Backend | Python 3.x + Flask |
-| Frontend | HTML5, Tailwind CSS, JavaScript vanilla |
+| Frontend | HTML5, CSS3, JavaScript vanilla |
 | Base de datos | SQLite3 |
 | ORM | SQLAlchemy |
+| Tipografía | Google Fonts — Montserrat |
 | Íconos | Font Awesome 6 |
 | Formulario de contacto | FormSubmit |
+| Mapa | Google Maps Embed (sin API Key) |
 
 ---
 
@@ -45,7 +80,7 @@ Sistema web integral desarrollado para la **Asociación de Acueducto Rural Quebr
 ```
 acueducto/
 │
-├── app.py                  # Aplicación principal Flask y todas las rutas
+├── app.py                  # Aplicación Flask, rutas y filtros de fecha
 ├── README.md
 │
 ├── instance/
@@ -56,14 +91,15 @@ acueducto/
 │   └── documentos/         # Archivos PDF subidos desde el panel admin
 │
 └── templates/
-    ├── base.html           # Plantilla base: navbar, footer, flashes
-    ├── index.html          # Página de inicio con noticias
+    ├── base.html           # Plantilla base: navbar, footer, popups, scripts
+    ├── index.html          # Inicio con hero, noticias y modal
+    ├── noticias.html       # Historial completo de avisos
     ├── nosotros.html       # Quiénes somos
     ├── servicios.html      # Servicios del acueducto
-    ├── transparencia.html  # Documentos públicos PDF
-    ├── contacto.html       # Formulario de contacto
-    ├── login.html          # Acceso al panel de administración
-    └── admin.html          # Panel de administración (protegido)
+    ├── transparencia.html  # Documentos PDF con buscador
+    ├── contacto.html       # Formulario + mapa
+    ├── login.html          # Acceso administrativo
+    └── admin.html          # Panel de administración
 ```
 
 ---
@@ -71,46 +107,36 @@ acueducto/
 ## 📋 Requisitos Previos
 
 - Python 3.8 o superior
-- Pip (gestor de paquetes de Python)
+- Pip
 
 ---
 
-## 🔧 Instalación y Configuración
+## 🔧 Instalación
 
-1. **Descargar o clonar el proyecto:**
-   ```bash
-   cd acueducto
-   ```
+```bash
+# 1. Clonar o descargar el proyecto
+cd acueducto
 
-2. **Crear y activar entorno virtual (recomendado):**
-   ```bash
-   python -m venv venv
-   # Windows:
-   venv\Scripts\activate
-   # Mac/Linux:
-   source venv/bin/activate
-   ```
+# 2. Crear entorno virtual
+python -m venv venv
 
-3. **Instalar dependencias:**
-   ```bash
-   pip install flask flask-sqlalchemy werkzeug
-   ```
+# Windows:
+venv\Scripts\activate
+# Mac/Linux:
+source venv/bin/activate
 
-4. **Ejecutar la aplicación:**
-   ```bash
-   python app.py
-   ```
+# 3. Instalar dependencias
+pip install flask flask-sqlalchemy werkzeug
 
-5. **Abrir en el navegador:**
-   ```
-   http://127.0.0.1:5000
-   ```
+# 4. Ejecutar
+python app.py
+```
 
-La base de datos y las carpetas de archivos se crean automáticamente al iniciar por primera vez.
+Abrir en el navegador: `http://127.0.0.1:5000`
 
 ---
 
-## 🔐 Acceso al Panel de Administración
+## 🔐 Acceso al Panel
 
 | Campo | Valor |
 |---|---|
@@ -118,34 +144,32 @@ La base de datos y las carpetas de archivos se crean automáticamente al iniciar
 | Usuario | `admin` |
 | Contraseña | `Acueducto2026` |
 
-> **Recomendación:** Cambiar la contraseña en `app.py` antes de publicar el sitio en producción.
+> ⚠️ Cambiar la contraseña en `app.py` antes de publicar en producción.
 
 ---
 
 ## 🗄️ Modelos de Base de Datos
 
-**Noticia** — Almacena los avisos publicados en el inicio.
-- `id`, `titulo`, `contenido`, `imagen` (opcional), `fecha`
+**Noticia** — `id`, `titulo`, `contenido`, `imagen`, `fecha`
 
-**Mensaje** — Almacena los mensajes enviados desde el formulario de contacto.
-- `id`, `nombre`, `correo`, `asunto`, `mensaje`, `fecha`
+**Mensaje** — `id`, `nombre`, `correo`, `asunto`, `mensaje`, `fecha`
 
-**Documento** — Almacena los documentos PDF subidos desde el panel admin.
-- `id`, `nombre`, `categoria`, `ruta`, `fecha`
+**Documento** — `id`, `nombre`, `categoria`, `ruta`, `fecha`
 
 ---
 
-## 🌐 Rutas de la Aplicación
+## 🌐 Rutas
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| GET | `/` | Página de inicio |
+| GET | `/` | Inicio (últimas 4 noticias) |
+| GET | `/noticias` | Historial completo |
 | GET | `/nosotros` | Quiénes somos |
-| GET | `/servicios` | Servicios del acueducto |
+| GET | `/servicios` | Servicios |
 | GET | `/transparencia` | Documentos públicos |
-| GET | `/documentos/<filename>` | Ver/descargar un PDF |
+| GET | `/documentos/<filename>` | Ver/descargar PDF |
 | GET | `/contacto` | Formulario de contacto |
-| POST | `/enviar_contacto` | Guardar mensaje en BD |
+| POST | `/enviar_contacto` | Guardar mensaje |
 | GET/POST | `/login` | Acceso al panel |
 | GET | `/logout` | Cerrar sesión |
 | GET | `/admin` | Panel de administración |
@@ -157,27 +181,7 @@ La base de datos y las carpetas de archivos se crean automáticamente al iniciar
 
 ---
 
-## ✅ Cumplimiento de Requerimientos del Cliente
-
-| Requerimiento | Estado |
-|---|---|
-| Sitio informativo para la comunidad | ✅ |
-| Sección Inicio | ✅ |
-| Sección Quiénes Somos (misión y visión) | ✅ |
-| Sección Servicios | ✅ |
-| Noticias y avisos | ✅ |
-| Información de contacto | ✅ |
-| Sección de Transparencia con PDFs | ✅ |
-| Diseño responsive para celulares | ✅ |
-| Formulario de contacto con notificación | ✅ |
-| Publicación y actualización de noticias | ✅ |
-| Subida de documentos PDF | ✅ |
-| Integración con redes sociales | ⏳ Pendiente (links del cliente) |
-| Panel de administración | ✅ |
-| Historia de la asociación | ⏳ Pendiente (texto del cliente) |
-
----
-
 ## 👨‍💻 Desarrollador
 
-Desarrollado por **Iván Carrasco** — Tecnólogo en Análisis y Desarrollo de Software, SENA.
+**Iván Carrasco** — Tecnólogo en Análisis y Desarrollo de Software, SENA  
+San Antonio del Tequendama, Cundinamarca, Colombia — 2026
