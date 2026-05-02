@@ -144,6 +144,9 @@
         <button class="tab-btn" id="btn-documentos" onclick="mostrarTab('tab-documentos')">
             📄 Documentos PDF
         </button>
+        <button class="tab-btn" id="btn-galeria" onclick="mostrarTab('tab-galeria')">
+            🖼️ Galería
+        </button>
     </div>
 
     <!-- ══ TAB NOTICIAS ══ -->
@@ -295,6 +298,77 @@
             {% endif %}
         </div>
     </div>
+    <!-- ══ TAB GALERÍA ══ -->
+    <div id="tab-galeria" style="display:none;">
+
+        <!-- Formulario subir foto -->
+        <form action="/admin/foto/subir" method="POST" enctype="multipart/form-data" class="form-grid">
+            <div class="form-full">
+                <label class="form-label">Categoría</label>
+                <select name="categoria" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none; background:#fff; color:#1a1a1a;">
+                    <option>Imágenes de desarrollo de la fase 1, proyecto entornos sostenibles para la gobernanza del agua, del programa de naciones unidas para el desarrollo (PNUD) y la corporación autónoma regional de cundinamarca.</option>
+                    <option>Iván, algunas imágenes históricas</option>
+                    <option>Imágenes de asamblea de usuarios del acueducto.</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Descripción (opcional)</label>
+                <input type="text" name="descripcion" placeholder="Ej: Instalación tubería sector norte"
+                    style="width:100%; padding:12px; border:1px solid #ccc; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:15px; outline:none;">
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <label class="form-label" style="margin:0; white-space:nowrap;">Imagen:</label>
+                <input type="file" name="imagen" accept="image/*" required class="form-file" style="flex:1;">
+            </div>
+            <div class="form-right">
+                <button type="submit" style="background:#2d4a6e; color:#fff; border:none; padding:12px 28px; border-radius:2px; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:700; cursor:pointer; letter-spacing:0.04em;">
+                    ＋ Subir foto
+                </button>
+            </div>
+        </form>
+
+        <!-- Tabla fotos -->
+        <div class="tabla-wrap">
+            <div class="tabla-header" style="background:#2d4a6e;">
+                <span>{{ fotos|length }} foto{% if fotos|length != 1 %}s{% endif %} publicada{% if fotos|length != 1 %}s{% endif %}</span>
+            </div>
+            {% if fotos %}
+            <div class="tabla-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Vista previa</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th style="text-align:center;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for foto in fotos %}
+                        <tr>
+                            <td style="white-space:nowrap; font-size:13px; color:#666;">{{ foto.fecha | fecha_es }}</td>
+                            <td>
+                                <img src="{{ url_for('static', filename='uploads/' ~ foto.ruta) }}"
+                                    style="height:48px; width:72px; object-fit:cover; border-radius:2px; vertical-align:middle;">
+                            </td>
+                            <td style="font-size:13px; color:#333;">{{ foto.descripcion or '—' }}</td>
+                            <td style="font-size:12px; color:#555; max-width:200px;">{{ foto.categoria[:40] }}{% if foto.categoria|length > 40 %}...{% endif %}</td>
+                            <td style="text-align:center;">
+                                <a href="/admin/foto/borrar/{{ foto.id }}"
+                                    onclick="return confirm('¿Eliminar esta foto?')"
+                                    class="btn-del">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty">No hay fotos publicadas.</div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 
 <!-- MODAL EDITAR -->
@@ -335,10 +409,13 @@
 
 <script>
     function mostrarTab(tabId) {
-        document.getElementById('tab-noticias').style.display   = tabId === 'tab-noticias'   ? 'block' : 'none';
-        document.getElementById('tab-documentos').style.display = tabId === 'tab-documentos' ? 'block' : 'none';
-        document.getElementById('btn-noticias').className   = 'tab-btn' + (tabId === 'tab-noticias'   ? ' active' : '');
-        document.getElementById('btn-documentos').className = 'tab-btn' + (tabId === 'tab-documentos' ? ' active' : '');
+        ['tab-noticias','tab-documentos','tab-galeria'].forEach(function(id) {
+            document.getElementById(id).style.display = id === tabId ? 'block' : 'none';
+        });
+        ['btn-noticias','btn-documentos','btn-galeria'].forEach(function(id) {
+            var tab = id.replace('btn-','tab-');
+            document.getElementById(id).className = 'tab-btn' + (tab === tabId ? ' active' : '');
+        });
     }
 
     var modal = document.getElementById('modal-editar');

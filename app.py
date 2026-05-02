@@ -4,6 +4,11 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.utils import secure_filename
+try:
+    from PIL import Image
+    PILLOW_AVAILABLE = True
+except ImportError:
+    PILLOW_AVAILABLE = False
 
 # Intentar configurar locale en español
 try:
@@ -60,6 +65,26 @@ os.makedirs(PDF_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def comprimir_imagen(ruta):
+    """Redimensiona y comprime imágenes subidas para reducir peso."""
+    if not PILLOW_AVAILABLE:
+        return
+    try:
+        img = Image.open(ruta)
+        # Convertir a RGB si es necesario (ej: PNG con transparencia)
+        if img.mode in ('RGBA', 'P'):
+            img = img.convert('RGB')
+        # Redimensionar si es muy grande (max 1200px de ancho)
+        max_w = 1200
+        if img.width > max_w:
+            ratio = max_w / img.width
+            nuevo_alto = int(img.height * ratio)
+            img = img.resize((max_w, nuevo_alto), Image.LANCZOS)
+        # Guardar con compresión
+        img.save(ruta, 'JPEG', quality=75, optimize=True)
+    except Exception:
+        pass  # Si falla no interrumpe la subida
+
 def allowed_pdf(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'pdf'
 
@@ -77,6 +102,13 @@ class Mensaje(db.Model):
     correo = db.Column(db.String(100), nullable=False)
     asunto = db.Column(db.String(100))
     mensaje = db.Column(db.Text, nullable=False)
+    fecha = db.Column(db.DateTime, default=datetime.now)
+
+class Foto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    categoria = db.Column(db.String(200), nullable=False)
+    descripcion = db.Column(db.String(200), nullable=True)
+    ruta = db.Column(db.String(200), nullable=False)
     fecha = db.Column(db.DateTime, default=datetime.now)
 
 class Documento(db.Model):
@@ -149,6 +181,11 @@ def todas_noticias():
     noticias = Noticia.query.order_by(Noticia.id.desc()).all()
     return render_template('noticias.html', noticias=noticias)
 
+@app.route('/galeria')
+def galeria():
+    fotos = Foto.query.order_by(Foto.categoria, Foto.id.desc()).all()
+    return render_template('galeria.html', fotos=fotos)
+
 @app.route('/transparencia')
 def transparencia():
     documentos = Documento.query.order_by(Documento.fecha.desc()).all()
@@ -166,7 +203,8 @@ def admin_noticias():
         return redirect(url_for('login'))
     noticias = Noticia.query.order_by(Noticia.id.desc()).all()
     documentos = Documento.query.order_by(Documento.fecha.desc()).all()
-    return render_template('admin.html', noticias=noticias, documentos=documentos)
+    fotos = Foto.query.order_by(Foto.categoria, Foto.id.desc()).all()
+    return render_template('admin.html', noticias=noticias, documentos=documentos, fotos=fotos)
 
 @app.route('/admin/noticia/nueva', methods=['POST'])
 def crear_noticia():
@@ -178,7 +216,9 @@ def crear_noticia():
     archivo = request.files.get('imagen')
     if archivo and allowed_file(archivo.filename):
         filename = secure_filename(archivo.filename)
-        archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        ruta_img = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        archivo.save(ruta_img)
+        comprimir_imagen(ruta_img)
         imagen_filename = filename
     nueva_n = Noticia(titulo=titulo, contenido=contenido, imagen=imagen_filename)
     db.session.add(nueva_n)
@@ -196,7 +236,9 @@ def editar_noticia(id):
     archivo = request.files.get('imagen')
     if archivo and allowed_file(archivo.filename):
         filename = secure_filename(archivo.filename)
-        archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        ruta_img = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        archivo.save(ruta_img)
+        comprimir_imagen(ruta_img)
         noticia.imagen = filename
     db.session.commit()
     flash("Noticia actualizada correctamente.")
@@ -210,6 +252,39 @@ def borrar_noticia(id):
     db.session.delete(noticia)
     db.session.commit()
     flash("Noticia eliminada correctamente.")
+    return redirect(url_for('admin_noticias'))
+
+@app.route('/admin/foto/subir', methods=['POST'])
+def subir_foto():
+    if 'admin' not in session:
+        return redirect(url_for('login'))
+    categoria = request.form['categoria']
+    descripcion = request.form.get('descripcion', '')
+    archivo = request.files.get('imagen')
+    if not archivo or not allowed_file(archivo.filename):
+        flash("Error: solo se permiten imágenes (jpg, png, gif, webp).", "error")
+        return redirect(url_for('admin_noticias'))
+    filename = secure_filename(archivo.filename)
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_')
+    filename = timestamp + filename
+    archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    nueva_foto = Foto(categoria=categoria, descripcion=descripcion, ruta=filename)
+    db.session.add(nueva_foto)
+    db.session.commit()
+    flash("Foto subida correctamente.")
+    return redirect(url_for('admin_noticias'))
+
+@app.route('/admin/foto/borrar/<int:id>')
+def borrar_foto(id):
+    if 'admin' not in session:
+        return redirect(url_for('login'))
+    foto = Foto.query.get_or_404(id)
+    ruta_fisica = os.path.join(app.config['UPLOAD_FOLDER'], foto.ruta)
+    if os.path.exists(ruta_fisica):
+        os.remove(ruta_fisica)
+    db.session.delete(foto)
+    db.session.commit()
+    flash("Foto eliminada correctamente.")
     return redirect(url_for('admin_noticias'))
 
 @app.route('/admin/documento/subir', methods=['POST'])

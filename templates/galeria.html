@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="background:#2d4a6e; padding:48px 24px 40px;">
+    <div style="max-width:1100px; margin:0 auto;">
+        <p style="font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#50C878; margin-bottom:10px;">Nuestra historia en imágenes</p>
+        <h1 style="font-size:clamp(28px,4vw,42px); font-weight:900; color:#fff; line-height:1.2;">Galería Fotográfica</h1>
+    </div>
+</div>
+
+<div class="container">
+    {% if fotos %}
+        {% set categorias = fotos | map(attribute='categoria') | unique | list %}
+        {% for cat in categorias %}
+        <div style="margin-bottom:48px;">
+            <!-- Título categoría -->
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid #2d4a6e;">
+                <i class="fas fa-images" style="color:#2d4a6e; font-size:18px;"></i>
+                <h2 style="font-size:16px; font-weight:700; color:#2d4a6e; line-height:1.4;">{{ cat }}</h2>
+            </div>
+
+            <!-- Grid de fotos -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:12px;">
+                {% for foto in fotos if foto.categoria == cat %}
+                <div onclick="abrirFoto('{{ url_for('static', filename='uploads/' ~ foto.ruta) }}', '{{ foto.descripcion | e }}', '{{ cat | e }}')"
+                    style="cursor:pointer; border-radius:3px; overflow:hidden; border:1px solid #ddddee; background:#fff; transition:transform 0.2s, box-shadow 0.2s;"
+                    onmouseover="this.style.transform='scale(1.02)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.12)'"
+                    onmouseout="this.style.transform='scale(1)';this.style.boxShadow='none'">
+                    <img src="{{ url_for('static', filename='uploads/' ~ foto.ruta) }}"
+                        alt="{{ foto.descripcion or cat }}"
+                        style="width:100%; height:180px; object-fit:cover; display:block;"
+                        loading="lazy">
+                    {% if foto.descripcion %}
+                    <div style="padding:10px 12px;">
+                        <p style="font-size:13px; font-weight:600; color:#2d4a6e; line-height:1.4;">{{ foto.descripcion }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div style="background:#fff; border:1px solid #ddddee; padding:56px; text-align:center; border-radius:2px;">
+        <i class="fas fa-images" style="font-size:40px; color:#d0ccc2; display:block; margin-bottom:14px;"></i>
+        <p style="font-size:17px; font-weight:600; color:#2d4a6e; margin-bottom:8px;">Aún no hay fotos publicadas</p>
+        <p style="font-size:15px; font-weight:400; color:#555577;">Próximamente se publicarán imágenes de la asociación.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- MODAL FOTO -->
+<div id="modal-foto" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.85); padding:16px; align-items:center; justify-content:center; flex-direction:column; gap:12px;">
+    <button onclick="cerrarFoto()" style="position:fixed; top:16px; right:20px; background:none; border:none; color:#fff; font-size:36px; cursor:pointer; line-height:1; z-index:201;">&times;</button>
+    <img id="modal-foto-img" src="" alt="" style="max-width:100%; max-height:80vh; object-fit:contain; border-radius:3px; display:block;">
+    <div style="text-align:center;">
+        <p id="modal-foto-cat" style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#50C878; margin-bottom:4px;"></p>
+        <p id="modal-foto-desc" style="font-size:15px; font-weight:600; color:#fff;"></p>
+    </div>
+</div>
+
+<script>
+    var modalFoto = document.getElementById('modal-foto');
+
+    function abrirFoto(src, desc, cat) {
+        document.getElementById('modal-foto-img').src = src;
+        document.getElementById('modal-foto-desc').textContent = desc;
+        document.getElementById('modal-foto-cat').textContent = cat;
+        modalFoto.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarFoto() {
+        modalFoto.style.display = 'none';
+        document.getElementById('modal-foto-img').src = '';
+        document.body.style.overflow = '';
+    }
+
+    modalFoto.addEventListener('click', function(e) {
+        if (e.target === modalFoto) cerrarFoto();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrarFoto();
+    });
+</script>
+{% endblock %}
