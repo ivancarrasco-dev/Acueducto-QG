@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- Preload hero image para acelerar LCP -->
+<link rel="preload" as="image" 
+    href="https://images.pexels.com/photos/6708687/pexels-photo-6708687.jpeg?auto=compress&cs=tinysrgb&w=800"
+    imagesrcset="https://images.pexels.com/photos/6708687/pexels-photo-6708687.jpeg?auto=compress&cs=tinysrgb&w=400 400w,
+                 https://images.pexels.com/photos/6708687/pexels-photo-6708687.jpeg?auto=compress&cs=tinysrgb&w=800 800w,
+                 https://images.pexels.com/photos/6708687/pexels-photo-6708687.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w"
+    imagesizes="100vw">
+
 
 <!-- HERO -->
-<div style="background: linear-gradient(rgba(15,40,80,0.72), rgba(15,40,80,0.72)), url('https://images.pexels.com/photos/6708687/pexels-photo-6708687.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover no-repeat; padding: 64px 24px 56px;">
+<div data-hero style="background: linear-gradient(rgba(15,40,80,0.72), rgba(15,40,80,0.72)), url('https://images.pexels.com/photos/6708687/pexels-photo-6708687.jpeg?auto=compress&cs=tinysrgb&w=800&q=70') center/cover no-repeat; padding: 64px 24px 56px;">
     <div style="max-width: 1100px; margin: 0 auto;">
         <p style="font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #50C878; margin-bottom: 16px;">
             Portal Comunitario · Vereda Quebrada Grande
