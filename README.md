@@ -47,12 +47,6 @@ Portal web oficial de la **Asociación de Usuarios del Acueducto Vereda Quebrada
 - **Transparencia** — Documentos PDF organizados por categoría con buscador en tiempo real
 - **Contacto** — Formulario con envío al correo `acueductoqgrande@hotmail.com` vía FormSubmit + mapa de Google Maps + datos de contacto completos
 
-### Información de Contacto Real
-- 📧 acueductoqgrande@hotmail.com
-- 💬 WhatsApp Usuarios: 313 866 4738
-- 💬 WhatsApp Tesorería: 302 845 2511
-- 📞 Reporte de daños: 318 567 1803 (Luis Cano — Fontanero)
-
 ### Panel de Administración
 - Acceso protegido con usuario y contraseña
 - **Tab Noticias** — Crear, editar y eliminar avisos con imagen opcional + buscador
@@ -91,7 +85,7 @@ Portal web oficial de la **Asociación de Usuarios del Acueducto Vereda Quebrada
 | ORM | SQLAlchemy |
 | Tipografía | Google Fonts — Montserrat |
 | Íconos | Font Awesome 6 |
-| Formulario de contacto | FormSubmit → acueductoqgrande@hotmail.com |
+| Formulario de contacto | FormSubmit (correo configurado en producción) |
 | Mapa | Google Maps Embed (sin API Key) |
 
 ---
@@ -168,13 +162,7 @@ La base de datos y las carpetas `static/uploads/` y `static/documentos/` se crea
 
 ## 🔐 Acceso al Panel
 
-| Campo | Valor |
-|---|---|
-| URL | `/login` |
-| Usuario | `admin` |
-| Contraseña | `Acueducto2026` |
-
-> ⚠️ Cambiar la contraseña en `app.py` antes de publicar en producción.
+Las credenciales de acceso al panel administrativo se configuran directamente en `app.py`. Consultar con el desarrollador antes de desplegar en producción.
 
 ---
 
